@@ -281,7 +281,7 @@ SPECIAL_TOKEN :
   }
 |
 	<INVALID_CHAR:
- 	"\'" (~ ["\n", "\r", "\'"]) ["\n", "\r"]>
+ 	"\'" (~ ["\n", "\r", "\'"])* ["\n", "\r"]>
   	{
     System.err.println("Line " + input_stream.getEndLine() +  " - Char constant has a \\n: " + image);
     countLexError++;
