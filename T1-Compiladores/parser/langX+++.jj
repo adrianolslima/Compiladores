@@ -10,19 +10,19 @@ import java.io.*;
 
 public class langX {
 final static String Version = "X+++ Compiler - Version 1.0 - 2017";
-boolean Menosshort = false; // saída resumida = falso
+boolean Menosshort = false; // saï¿½da resumida = falso
 
 
-// Define o método "main" da classe langX.  
+// Define o mï¿½todo "main" da classe langX.  
   public  static void main(String args[]) throws ParseException 
   {
     String filename = ""; // nome do arquivo a ser analisado
-    langX parser;     // analisador léxico/sintático
+    langX parser;     // analisador lï¿½xico/sintï¿½tico
     int i;
     boolean ms = false;
 
     System.out.println(Version);
-    // lê os parâmetros passados para o compilador
+    // lï¿½ os parï¿½metros passados para o compilador
     for (i = 0; i < args.length - 1; i++)
     {
     if ( args[i].toLowerCase().equals("-short") )
@@ -35,12 +35,12 @@ boolean Menosshort = false; // saída resumida = falso
     }
 
     if (args[i].equals("-"))
-    {       // lê da entrada padrão      
+    {       // lï¿½ da entrada padrï¿½o      
         System.out.println("Reading from standard input . . .");
         parser = new langX(System.in);
      }
      else 
-    {       // lê do arquivo
+    {       // lï¿½ do arquivo
         filename = args[args.length-1];  
         System.out.println("Reading from file " + filename + " . . .");
         try {
@@ -52,8 +52,8 @@ boolean Menosshort = false; // saída resumida = falso
         }
     } 
     parser.Menosshort = ms;
-    parser.program();   // chama o método que faz a análise
-    if ( parser.token_source.foundLexError() != 0 ) // verifica se houve erro léxico
+    parser.program();   // chama o mï¿½todo que faz a anï¿½lise
+    if ( parser.token_source.foundLexError() != 0 ) // verifica se houve erro lï¿½xico
         System.out.println(parser.token_source.foundLexError() + " Lexical Errors found");
     else
         System.out.println("Program successfully analyzed.");
@@ -87,7 +87,7 @@ public int foundLexError()
 }
 
 
-/* Espaços a serem desprezados no início de cada token */
+/* Espaï¿½os a serem desprezados no inï¿½cio de cada token */
 
 SKIP :
 {
@@ -140,7 +140,7 @@ TOKEN :
 | < STRING: "string" >
 | < SUPER: "super" >
 
-/*----Atualizações----*/
+/*----Atualizaï¿½ï¿½es----*/
 
 | < CHAR: "char" >
 | < BOOLEAN: "boolean" >
@@ -155,7 +155,7 @@ TOKEN :
 /* Constantes */
 TOKEN :
 {
-  < int_constant:(  // números decimais
+  < int_constant:(  // nï¿½meros decimais
                   (["0"-"9"] (["0"-"9"])* ) |
                   (["0"-"7"] (["0"-"7"])* ["o", "O"]) |
                   (["0"-"9"] (["0"-"7", "A"-"F","a"-"f"])* ["h", "H"]) |
@@ -167,12 +167,12 @@ TOKEN :
 |
   < null_constant: "null" > // constante null
 
-/*---Atualizações---*/
+/*---Atualizaï¿½ï¿½es---*/
 
 | 
   < boolean_constant: "true" | "false" > //Para aceitar valores booleanos
 |
-  < char_constant: "\'"( ~["\'","\n","\r"," "]) "\'" > //Para aceitar escrever 'a' ou '5', ou caracteres
+  < char_constant: "\'"( ((["\\"])? ["n","r","t","'","\\","\""]) | ~["\n","\r"]) "\'" > //Para aceitar escrever 'a' ou '5', ou caracteres
 |
   < float_constant: (<int_constant> "." <int_constant>) |(<int_constant> "." <int_constant> ("e"|"E") ("-" | "+") <int_constant>)  >//Para aceitar valores float
 }
@@ -188,7 +188,7 @@ TOKEN :
 }
 
 
-/* Símbolos especiais */
+/* Sï¿½mbolos especiais */
 TOKEN :
 {
   < LPAREN: "(" >
@@ -221,7 +221,7 @@ TOKEN :
 }
 
 
-/* Trata os erros léxicos */
+/* Trata os erros lï¿½xicos */
 SPECIAL_TOKEN :
 {
 <INVALID_LEXICAL: 
@@ -252,7 +252,7 @@ SPECIAL_TOKEN :
   "\t",
   "\f",
 
-/*----Atualizações----*/
+/*----Atualizaï¿½ï¿½es----*/
 
   "'"
 
@@ -273,26 +273,26 @@ SPECIAL_TOKEN :
 
 |
 	<INVALID_CHAR_SIZE:
- 	"\'" (~ ["\n"]) (~ ["\n"])+ "\'" >
+ 	"\'" ( (~["\n"](~ ["\n"])) ) "\'" >
   	{
     System.err.println("Line " + input_stream.getEndLine() +  " - Char constant must have the size of 1 ");
     
-    countLexError++;;
+    countLexError++;
   }
 |
 	<INVALID_CHAR:
- 	"\'" (~ ["\n", "\r", "\'"])* ["\n", "\r"]>
+ 	"\'" (~ ["\n", "\r", "\'"])* ["\n","\r"]>
   	{
     System.err.println("Line " + input_stream.getEndLine() +  " - Char constant has a \\n: " + image);
     countLexError++;
   }
-|
-	<INVALID_CHAR_EMPTY:
- 	"\'" [" "] "\'" >
-  	{
-    System.err.println("Line " + input_stream.getEndLine() +  " - Char constant is empty" + image);
-    countLexError++;
-  }
+//|
+//	<INVALID_CHAR_EMPTY:
+// 	"\'" [" "] "\'" >
+//  	{
+//    System.err.println("Line " + input_stream.getEndLine() +  " - Char constant is empty" + image);
+//    countLexError++;
+//  }
 }
 
 
