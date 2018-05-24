@@ -1,0 +1,3 @@
+method(){
+    return 0;
+}
