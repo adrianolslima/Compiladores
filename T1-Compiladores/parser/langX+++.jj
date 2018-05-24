@@ -273,7 +273,7 @@ SPECIAL_TOKEN :
 
 |
 	<INVALID_CHAR_SIZE:
- 	"\'" ( (~["\n"](~ ["\n"])) ) "\'" >
+ 	"\'" ( ((["\\"])? ~["n","r","t","'","\\","\""]) | (~["\n"](~ ["\n"])+) ) "\'" >
   	{
     System.err.println("Line " + input_stream.getEndLine() +  " - Char constant must have the size of 1 ");
     
