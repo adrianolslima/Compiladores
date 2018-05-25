@@ -9,7 +9,7 @@ import java.io.*;
 
 
 public class langX {
-final static String Version = "X+++ Compiler - Version 1.0 - 2017";
+final static String Version = "X+++ Compiler - Version 1.0 - 2018";
 boolean Menosshort = false; // sa�da resumida = falso
 
 
@@ -286,13 +286,7 @@ SPECIAL_TOKEN :
     System.err.println("Line " + input_stream.getEndLine() +  " - Char constant has a \\n: " + image);
     countLexError++;
   }
-//|
-//	<INVALID_CHAR_EMPTY:
-// 	"\'" [" "] "\'" >
-//  	{
-//    System.err.println("Line " + input_stream.getEndLine() +  " - Char constant is empty" + image);
-//    countLexError++;
-//  }
+
 }
 
 
