@@ -8,5 +8,7 @@
 /langX.java
 /langXConstants.java
 /langXTokenManager.java
-/langX$JJCalls.class
-/langX$LookaheadSuccess.class
+/ParseException.java
+/SimpleCharStream.java
+/Token.java
+/TokenMgrError.java
