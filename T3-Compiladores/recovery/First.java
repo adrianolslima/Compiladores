@@ -13,6 +13,8 @@ public class First { // implementa os conjuntos first p/ alguns n.terminais
 	static public final RecoverySet classlist = new RecoverySet();
 	static public final RecoverySet constructdecl = new RecoverySet();
 	static public final RecoverySet statlist = new RecoverySet();
+	static public final RecoverySet classbodystatement = new RecoverySet();
+	static public final RecoverySet classbodyprestatement = new RecoverySet();
 	static public final RecoverySet program = classlist;
 	// static public final RecoverySet switchcasestat = new RecoverySet();
 
@@ -46,6 +48,10 @@ public class First { // implementa os conjuntos first p/ alguns n.terminais
 		statlist.add(new Integer(langXConstants.LBRACE));
 		statlist.add(new Integer(langXConstants.BREAK));
 		statlist.add(new Integer(langXConstants.SEMICOLON));
+		
+		classbodystatement.addAll(classbodyprestatement);  
+	    classbodystatement.addAll(methoddecl); 
+	    classbodystatement.addAll(constructdecl);
 
 	}
 }

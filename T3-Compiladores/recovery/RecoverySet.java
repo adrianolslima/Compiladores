@@ -1,7 +1,6 @@
 package recovery;
 
 import parser.*;
-
 import java.util.*;
 
 public class RecoverySet extends HashSet {

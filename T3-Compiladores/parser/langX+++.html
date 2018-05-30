@@ -25,57 +25,57 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod4">classbody</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LBRACE&gt; ( <A HREF="#prod2">classlist</A> )? ( <A HREF="#prod5">vardecl</A> &lt;SEMICOLON&gt; )* ( <A HREF="#prod6">constructdecl</A> )* ( <A HREF="#prod7">methoddecl</A> )* &lt;RBRACE&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LBRACE&gt; ( <A HREF="#prod5">classbodyprestatement</A> )? &lt;RBRACE&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">classbodyprestatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod5">classbodyprestatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod9">classbodystatement</A> ( <A HREF="#prod8">classbodyprestatement</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod6">classbodystatement</A> ( <A HREF="#prod5">classbodyprestatement</A> )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">classbodystatement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">classbodystatement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;LBRACE&gt; ( <A HREF="#prod2">classlist</A> )? | <A HREF="#prod5">vardecl</A> &lt;SEMICOLON&gt; | <A HREF="#prod10">atribstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod6">constructdecl</A> | <A HREF="#prod7">methoddecl</A> &lt;RBRACE&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;LBRACE&gt; <A HREF="#prod2">classlist</A> | <A HREF="#prod7">vardecl</A> &lt;SEMICOLON&gt; | <A HREF="#prod8">atribstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod9">constructdecl</A> | <A HREF="#prod10">methoddecl</A> | &lt;EOF&gt; &lt;RBRACE&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod5">vardecl</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">vardecl</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) &lt;IDENT&gt; ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* ( &lt;COMMA&gt; &lt;IDENT&gt; ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) &lt;IDENT&gt; ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* ( &lt;ASSIGN&gt; ( <A HREF="#prod11">alocexpression</A> | <A HREF="#prod12">expression</A> ) )* ( &lt;COMMA&gt; &lt;IDENT&gt; ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* ( &lt;ASSIGN&gt; ( <A HREF="#prod11">alocexpression</A> | <A HREF="#prod12">expression</A> ) )* )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod6">constructdecl</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">constructdecl</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;CONSTRUCTOR&gt; <A HREF="#prod11">methodbody</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;CONSTRUCTOR&gt; <A HREF="#prod13">methodbody</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">methoddecl</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">methoddecl</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* &lt;IDENT&gt; <A HREF="#prod11">methodbody</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* &lt;IDENT&gt; <A HREF="#prod13">methodbody</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">methodbody</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">methodbody</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LPAREN&gt; <A HREF="#prod12">paramlist</A> &lt;RPAREN&gt; <A HREF="#prod13">statement</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;LPAREN&gt; <A HREF="#prod14">paramlist</A> &lt;RPAREN&gt; <A HREF="#prod15">statement</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">paramlist</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">paramlist</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) &lt;IDENT&gt; ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* ( &lt;ASSIGN&gt; ( <A HREF="#prod14">alocexpression</A> | <A HREF="#prod15">expression</A> ) )* ( &lt;COMMA&gt; ( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) &lt;IDENT&gt; ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* ( &lt;ASSIGN&gt; ( <A HREF="#prod14">alocexpression</A> | <A HREF="#prod15">expression</A> ) )* )* )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) &lt;IDENT&gt; ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* ( &lt;ASSIGN&gt; ( <A HREF="#prod11">alocexpression</A> | <A HREF="#prod12">expression</A> ) )* ( &lt;COMMA&gt; ( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) &lt;IDENT&gt; ( &lt;LBRACKET&gt; &lt;RBRACKET&gt; )* ( &lt;ASSIGN&gt; ( <A HREF="#prod11">alocexpression</A> | <A HREF="#prod12">expression</A> ) )* )* )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod13">statement</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod15">statement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod5">vardecl</A> &lt;SEMICOLON&gt; | <A HREF="#prod10">atribstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod16">printstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod17">readstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod18">returnstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod19">superstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod20">ifstat</A> | <A HREF="#prod21">forstat</A> | &lt;LBRACE&gt; <A HREF="#prod22">statlist</A> &lt;RBRACE&gt; | &lt;BREAK&gt; &lt;SEMICOLON&gt; | &lt;SEMICOLON&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod7">vardecl</A> &lt;SEMICOLON&gt; | <A HREF="#prod8">atribstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod7">vardecl</A> &lt;SEMICOLON&gt; | <A HREF="#prod16">printstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod17">readstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod18">returnstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod19">superstat</A> &lt;SEMICOLON&gt; | <A HREF="#prod20">ifstat</A> | <A HREF="#prod21">forstat</A> | &lt;LBRACE&gt; <A HREF="#prod22">statlist</A> &lt;RBRACE&gt; | &lt;BREAK&gt; &lt;SEMICOLON&gt; | &lt;SEMICOLON&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">atribstat</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">atribstat</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod23">lvalue</A> &lt;ASSIGN&gt; ( <A HREF="#prod14">alocexpression</A> | <A HREF="#prod15">expression</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod23">lvalue</A> &lt;ASSIGN&gt; ( <A HREF="#prod11">alocexpression</A> | <A HREF="#prod12">expression</A> )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod16">printstat</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;PRINT&gt; <A HREF="#prod15">expression</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;PRINT&gt; <A HREF="#prod12">expression</A></TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod17">readstat</A></TD>
@@ -85,7 +85,7 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod18">returnstat</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RETURN&gt; ( <A HREF="#prod15">expression</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RETURN&gt; ( <A HREF="#prod12">expression</A> )?</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod19">superstat</A></TD>
@@ -95,57 +95,72 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod20">ifstat</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IF&gt; &lt;LPAREN&gt; <A HREF="#prod15">expression</A> &lt;RPAREN&gt; <A HREF="#prod13">statement</A> ( &lt;ELSE&gt; <A HREF="#prod13">statement</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IF&gt; &lt;LPAREN&gt; <A HREF="#prod12">expression</A> &lt;RPAREN&gt; <A HREF="#prod15">statement</A> ( &lt;ELSE&gt; <A HREF="#prod15">statement</A> )?</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod21">forstat</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FOR&gt; &lt;LPAREN&gt; ( <A HREF="#prod10">atribstat</A> )? &lt;SEMICOLON&gt; ( <A HREF="#prod15">expression</A> )? &lt;SEMICOLON&gt; ( <A HREF="#prod10">atribstat</A> )? &lt;RPAREN&gt; <A HREF="#prod13">statement</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;FOR&gt; &lt;LPAREN&gt; ( <A HREF="#prod8">atribstat</A> )? &lt;SEMICOLON&gt; ( <A HREF="#prod12">expression</A> )? &lt;SEMICOLON&gt; ( <A HREF="#prod8">atribstat</A> )? &lt;RPAREN&gt; <A HREF="#prod15">statement</A></TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod22">statlist</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod13">statement</A> ( <A HREF="#prod22">statlist</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod15">statement</A> ( <A HREF="#prod22">statlist</A> )?</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod23">lvalue</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENT&gt; ( &lt;LBRACKET&gt; <A HREF="#prod15">expression</A> &lt;RBRACKET&gt; | &lt;DOT&gt; &lt;IDENT&gt; ( &lt;LPAREN&gt; <A HREF="#prod24">arglist</A> &lt;RPAREN&gt; )? )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENT&gt; ( &lt;LBRACKET&gt; <A HREF="#prod12">expression</A> &lt;RBRACKET&gt; | &lt;DOT&gt; &lt;IDENT&gt; ( &lt;LPAREN&gt; <A HREF="#prod24">arglist</A> &lt;RPAREN&gt; )? )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod14">alocexpression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod11">alocexpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;NEW&gt; ( &lt;IDENT&gt; &lt;LPAREN&gt; <A HREF="#prod24">arglist</A> &lt;RPAREN&gt; | ( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) ( &lt;LBRACKET&gt; <A HREF="#prod15">expression</A> &lt;RBRACKET&gt; )+ )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;NEW&gt; ( &lt;IDENT&gt; &lt;LPAREN&gt; <A HREF="#prod24">arglist</A> &lt;RPAREN&gt; | ( &lt;INT&gt; | &lt;STRING&gt; | &lt;FLOAT&gt; | &lt;BOOLEAN&gt; | &lt;CHAR&gt; | &lt;OR&gt; | &lt;XOR&gt; | &lt;NOT&gt; | &lt;AND&gt; | &lt;IDENT&gt; ) ( &lt;LBRACKET&gt; <A HREF="#prod12">expression</A> &lt;RBRACKET&gt; )+ )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod15">expression</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod12">expression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod25">numexpr</A> ( ( &lt;LT&gt; | &lt;GT&gt; | &lt;LE&gt; | &lt;GE&gt; | &lt;EQ&gt; | &lt;NEQ&gt; ) <A HREF="#prod25">numexpr</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod25">logicexpression</A> ( ( &lt;XOR&gt; | &lt;OR&gt; ) <A HREF="#prod25">logicexpression</A> )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod25">numexpr</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod25">logicexpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod26">term</A> ( ( &lt;PLUS&gt; | &lt;MINUS&gt; ) <A HREF="#prod26">term</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod26">notexpression</A> ( &lt;AND&gt; <A HREF="#prod26">notexpression</A> )*</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">term</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">notexpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod27">unaryexpr</A> ( ( &lt;STAR&gt; | &lt;SLASH&gt; | &lt;REM&gt; ) <A HREF="#prod27">unaryexpr</A> )*</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;NOT&gt; )? <A HREF="#prod27">numexpression</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">unaryexpr</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod27">numexpression</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( ( &lt;PLUS&gt; | &lt;MINUS&gt; ) )? <A HREF="#prod28">factor</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod28">numexpr</A> ( ( &lt;LT&gt; | &lt;GT&gt; | &lt;LE&gt; | &lt;GE&gt; | &lt;EQ&gt; | &lt;NEQ&gt; ) <A HREF="#prod28">numexpr</A> )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">factor</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod28">numexpr</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;int_constant&gt; | &lt;string_constant&gt; | &lt;boolean_constant&gt; | &lt;char_constant&gt; | &lt;float_constant&gt; | &lt;null_constant&gt; | <A HREF="#prod23">lvalue</A> | &lt;LPAREN&gt; <A HREF="#prod15">expression</A> &lt;RPAREN&gt; )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod29">term</A> ( ( &lt;PLUS&gt; | &lt;MINUS&gt; ) <A HREF="#prod29">term</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod29">term</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod30">unaryexpr</A> ( ( &lt;STAR&gt; | &lt;SLASH&gt; | &lt;REM&gt; ) <A HREF="#prod30">unaryexpr</A> )*</TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod30">unaryexpr</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( ( &lt;PLUS&gt; | &lt;MINUS&gt; ) )? <A HREF="#prod31">factor</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod31">factor</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( &lt;int_constant&gt; | &lt;string_constant&gt; | &lt;boolean_constant&gt; | &lt;char_constant&gt; | &lt;float_constant&gt; | &lt;null_constant&gt; | <A HREF="#prod23">lvalue</A> | &lt;LPAREN&gt; <A HREF="#prod12">expression</A> &lt;RPAREN&gt; )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod24">arglist</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod15">expression</A> ( &lt;COMMA&gt; <A HREF="#prod15">expression</A> )* )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod12">expression</A> ( &lt;COMMA&gt; <A HREF="#prod12">expression</A> )* )?</TD>
 </TR>
 </TABLE>
 </BODY>

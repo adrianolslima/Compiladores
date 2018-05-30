@@ -184,16 +184,16 @@ SKIP :
   "//" : singlelinecomment
 }
 
-< multilinecomment > SKIP :
+<multilinecomment> SKIP:
 {
-  "*/" : DEFAULT
-| < ~[ ] >
+   "*/" : DEFAULT
+|  <~[]>
 }
 
-< singlelinecomment > SKIP :
+<singlelinecomment> SKIP:
 {
-  < [ "\n", "\r" ] > : DEFAULT
-| < ~[ ] >
+   <["\n","\r"]> : DEFAULT
+|   <~[]>
 }
 
 
@@ -201,29 +201,31 @@ SKIP :
 
 TOKEN :
 {
-  < BREAK : "break" >
-| < CLASS : "class" >
-| < CONSTRUCTOR : "constructor" >
-| < ELSE : "else" >
-| < EXTENDS : "extends" >
-| < FOR : "for" >
-| < IF : "if" >
-| < INT : "int" >
-| < NEW : "new" >
-| < PRINT : "print" >
-| < READ : "read" >
-| < RETURN : "return" >
-| < STRING : "string" >
-| < SUPER : "super" >
-  /*----Atualizações----*/
+  < BREAK: "break" > 
+| < CLASS: "class" >
+| < CONSTRUCTOR: "constructor" >
+| < ELSE: "else" >
+| < EXTENDS: "extends" >
+| < FOR: "for" >
+| < IF: "if" >
+| < INT: "int" >
+| < NEW: "new" >
+| < PRINT: "print" >
+| < READ: "read" >
+| < RETURN: "return" >
+| < STRING: "string" >
+| < SUPER: "super" >
 
-| < CHAR : "char" >
-| < BOOLEAN : "boolean" >
-| < FLOAT : "float" >
-| < AND : "and" >
-| < OR : "or" >
-| < XOR : "xor" >
-| < NOT : "not" >
+/*----Atualizações----*/
+
+| < CHAR: "char" >
+| < BOOLEAN: "boolean" >
+| < FLOAT: "float" >
+| < AND: "and">
+| < OR: "or" >
+| < XOR: "xor" >
+| < NOT: "not" >
+
 }
 
 /* Constantes */
@@ -255,9 +257,11 @@ TOKEN :
 /* Identificadores */
 TOKEN :
 {
-  < IDENT : < LETTER > ( < LETTER > | < DIGIT > )* >
-| < #LETTER : [ "A"-"Z", "a"-"z" ] >
-| < #DIGIT : [ "0"-"9" ] >
+  < IDENT: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+  < #LETTER:["A"-"Z","a"-"z"] >
+|
+  < #DIGIT:["0"-"9"] >
 }
 
 
@@ -278,18 +282,19 @@ TOKEN :
 /* Operadores */
 TOKEN :
 {
-  < ASSIGN : "=" >
-| < GT : ">" >
-| < LT : "<" >
-| < EQ : "==" >
-| < LE : "<=" >
-| < GE : ">=" >
-| < NEQ : "!=" >
-| < PLUS : "+" >
-| < MINUS : "-" >
-| < STAR : "*" >
-| < SLASH : "/" >
-| < REM : "%" >
+  < ASSIGN: "=" >
+| < GT: ">" >
+| < LT: "<" >
+| < EQ: "==" >
+| < LE: "<=" >
+| < GE: ">=" >
+| < NEQ: "!=" >
+| < PLUS: "+" >
+| < MINUS: "-" >
+| < STAR: "*" >
+| < SLASH: "/" >
+| < REM: "%" >
+
 }
 
 
@@ -365,16 +370,16 @@ void program() throws ParseEOFException :
   RecoverySet g = First.program;
 }
 {
-  [ classlist(g) ] 
+  classlist(g)
   try
   {
-    < EOF >
+    < EOF > | classlist(g)
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "program");
   }
-//  [ program() ]
+  [ program() ]
 }
 
 void classlist(RecoverySet g) throws ParseEOFException :
@@ -473,7 +478,7 @@ void vardecl(RecoverySet g) throws ParseEOFException :
     < IDENT > (< LBRACKET > < RBRACKET >) * (< ASSIGN > (alocexpression(g)
   | expression(g))) * 
     (< COMMA > < IDENT > (< LBRACKET > < RBRACKET >) * (< ASSIGN > (alocexpression(g)
-  | expression(g))) * ) *
+  | expression(g))) *) *
   }
   catch (ParseException e)
   {
@@ -536,6 +541,7 @@ void methodbody(RecoverySet g) throws ParseEOFException :
 
 void paramlist(RecoverySet g) throws ParseEOFException :
 {
+//	RecoverySet f1 = new RecoverySet(IDENT).union(g);
 }
 {
   try
