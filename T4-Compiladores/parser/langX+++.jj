@@ -12,35 +12,35 @@ PARSER_BEGIN(langX)
 package parser;
 
 import java.io.*;
-import recovery.*;   // importa as classes de recuperao de erros do AS
-import syntactTree.*; // importado para permitir a utiliza��o do objeto da classe syntactTree. 
+import recovery.*; // importa as classes de recuperção de erros do AS
+import syntactTree.*; // importado para permitir a utilização do objeto da classe syntactTree. 
 
 public class langX {
 final static String Version = "X+++ Compiler - Version 1.0 - 2018";
-int contParseError = 0;           // contador de erros sintticos
-boolean debug_recovery;   // controla verbose de recuperao de erros
+int contParseError = 0; // contador de erros sintáticos
+boolean debug_recovery; // controla verbose de recuperção de erros
 Token lastError = null;
 
 //Programa 9.6
 
-if ( parser.token_source.foundLexError() // verifica se pode operar sobre
-          + parser.contParseError == 0)      // a árvore sintática
-    {
-        if (print_tree) // exibir a árvore
-        {
-            PrintTree prt = new PrintTree();
-            prt.printRoot(root);     // chama método para imprimir árvore
-        }
-        TypeCheck tc = new TypeCheck();
-        try {
-             tc.TypeCheckRoot(root);
-             System.out.println("0 Semantic Errors found");
-        }
-        catch (SemanticException e)
-        {
-            System.out.println(e.getMessage());
-        }
-   }
+//if ( parser.token_source.foundLexError() // verifica se pode operar sobre
+//          + parser.contParseError == 0)  // a árvore sintática
+//    {
+//        if (print_tree) // exibir a árvore
+//        {
+//            PrintTree prt = new PrintTree();
+//            prt.printRoot(root); // chama método para imprimir árvore
+//        }
+//        TypeCheck tc = new TypeCheck();
+//        try {
+//             tc.TypeCheckRoot(root);
+//             System.out.println("0 Semantic Errors found");
+//        }
+//        catch (SemanticException e)
+//        {
+//            System.out.println(e.getMessage());
+//        }
+//   }
 
 // Define o mtodo "main" da classe langX.  
   public  static void main(String args[]) throws ParseException 
@@ -320,7 +320,7 @@ TOKEN :
 }
 
 
-/* Trata os erros lxicos */
+/* Trata os erros léxicos */
 SPECIAL_TOKEN :
 {
 <INVALID_LEXICAL: 
@@ -387,70 +387,70 @@ SPECIAL_TOKEN :
   }
 }
 
-// Mudando void para ListNode segundo programa 6.4 
-ListNode program() throws ParseEOFException :
+/*--- Programa 6.4 ---*/
+//Revisar
+ListNode program() throws ParseEOFException : // atualizado: retorna ListNode
 {
   RecoverySet g = First.program;
-  ListNode l = null, d = null; //Adicionado 
+  ListNode l = null, d = null; // incluído
 }
 {
-  <EOF>	|(l = classlist(g)  //Adicionado 
+  [ l = classlist(g) ] // atualizado
   try
   {
-    < EOF > {return l;} //Adicionado 
+    < EOF >
+    {return l;} // incluído
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "program");
   }
-  [ d = program() ]) //Adicionado 
+  	[ d = program() ] //Adicionado 
   {
-    return l; //Adicionado 
+    return l; // incluído
   }
 }
 
-// Mudando de void para List node segundo programa 6.6 e 6.7
-ListNode classlist(RecoverySet g) throws ParseEOFException :
+/*--- Programa 6.6 e 6.7 ---*/
+ListNode classlist(RecoverySet g) throws ParseEOFException : // atualizado: retorna ListNode
 {
-  ClassDeclNode c = null; //Adicionado 
-  ListNode l = null; //Adicionado
-  
+  ClassDeclNode c = null; // incluído
+  ListNode l = null; // incluído
   RecoverySet f = First.classlist.union(g);
 }
-{(c = classdecl(f)
-	{
-	if (l == null)
-		l = new ListNode(c);
-	else
-		l.add(c);
-}
-)+ {return l;}
+{
+  (
+    c = classdecl(f) // atualizado
+    {
+      if (l == null) 
+      l = new ListNode(c);
+      else 
+      l.add(c);
+    }
+  )+
+  {
+    return l;
+  }
 }
 
-//Tirei o void e troquei por ClassDeclNode - 6.2
-ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException :
+/*--- Programa 6.2 ---*/
+ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna ClassDeclNode
 {
-  //Inicio Adi��o - 6.2
-  Token t1, t2, t3 = null;
-  ClassBodyNode c1 = null;
-  //Fim Adi��o - 6.2
+  Token t1, t2, t3 = null; // incluído
+  ClassBodyNode c1 = null; // incluído
 }
 {
   try
   {
     t1 = < CLASS > t2 = < IDENT > [ < EXTENDS > t3 = < IDENT > ] c1 = classbody(g)
-	//Inicio Adi��o - 6.2
     {
-      return new ClassDeclNode (t1, t2, t3, c1);
-  	}
-  	//Fim Adi��o - 6.2
+      return new ClassDeclNode(t1, t2, t3, c1);
+    }
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "classdecl");
-    //Inicio Adi��o - 6.2
-    return new ClassDeclNode(t1, t2, t3, c1);
-    //Fim Adi��o - 6.2
+    return new ClassDeclNode(t1, t2, t3, c1); // incluído
   }
 }
 
@@ -485,8 +485,15 @@ void classbodyprestatement(RecoverySet g) throws ParseEOFException :
   }
 }
 
-void classbodystatement(RecoverySet g) throws ParseEOFException :
+/*--- Programa 6.8 ---*/
+ClassBodyNode classbodystatement(RecoverySet g) throws ParseEOFException : // atualizado: retorna ClassBodyNode
 {
+  ListNode c, v, ct, m = null; // incluído
+  VarDeclNode vd; // incluído
+  ConstructDeclNode cd; // incluído
+  MethodDeclNode md; // incluído
+  Token t = null; // incluído
+  
   RecoverySet 	f2 = new RecoverySet(SEMICOLON).union(g).remove(IDENT), 
   				f3 = First.methoddecl.union(g).remove(IDENT), 
   				f4 = First.constructdecl.union(f3).remove(IDENT), 
@@ -495,14 +502,15 @@ void classbodystatement(RecoverySet g) throws ParseEOFException :
 {
   try
   {
-    < LBRACE > 
-    classlist(f5)
-  | LOOKAHEAD(3) vardecl(f2) < SEMICOLON >
+    t = < LBRACE > // atualizado
+    c = classlist(f5) // atualizado
+  | LOOKAHEAD(3) vd = vardecl(f2) < SEMICOLON > // atualizado
   | LOOKAHEAD(3) atribstat(f2) < SEMICOLON >
   | constructdecl(f4)
   | methoddecl(f3)
   | < EOF >
     < RBRACE >
+    { return new ClassBodyNode(t, c, v, ct, m);
   }
   catch (ParseException e)
   {

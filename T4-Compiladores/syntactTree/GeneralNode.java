@@ -1,19 +1,15 @@
-package syntactTree;
+// Programa 6.1
 
-// Inicio Programa 6.1
+package syntactTree;
 
 import parser.*;
 
 abstract public class GeneralNode {
-		
+
 	public Token position;
-	
-	public GeneralNode(Token x)
-	{
+
+	public GeneralNode(Token x) {
 		position = x;
 	}
-	
-// Fim Programa 6.1
-	
-}
 
+}
