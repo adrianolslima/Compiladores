@@ -1059,14 +1059,13 @@ ExpreNode term() throws ParseEOFException :
 
 ExpreNode unaryexpr() throws ParseEOFException :
 {
-ExpreNode e;
-Token t = null;
+  ExpreNode e;
+  Token t = null;
 }
 {
-   [( t = <PLUS> | t = <MINUS>)] e = factor()
-   { return ( (t == null) ? e : new UnaryNode(t, e));}
+  [ ( t = < PLUS > | t = < MINUS > ) ] e = factor()
+  { return ((t == null) ? e : new UnaryNode(t, e)); }
 }
-
 
 ExpreNode factor() throws ParseEOFException :
 {
