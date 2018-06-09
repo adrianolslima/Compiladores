@@ -62,7 +62,35 @@ public class PrintTree {
 		numberVarDeclListNode(x.param);
 		numberStatementNode(x.stat);
 	}
-	
+
+	/*--- Programa 7.8 ---*/	
+	public void numberStatementNode(StatementNode x) {
+
+		if (x instanceof BlockNode)
+			numberBlockNode((BlockNode) x);
+		else if (x instanceof VarDeclNode)
+			numberVarDeclNode((VarDeclNode) x);
+		else if (x instanceof AtribNode)
+			numberAtribNode((AtribNode) x);
+		else if (x instanceof IfNode)
+			numberIfNode((IfNode) x);
+		else if (x instanceof ForNode)
+			numberForNode((ForNode)x);
+		else if (x instanceof PrintNode)
+			numberPrintNode((PrintNode) x);
+		else if (x instanceof NopNode)
+			numberNopNode((NopNode) x);
+		else if (x instanceof ReadNode)
+			numberReadNode((ReadNode) x);
+		else if (x instanceof ReturnNode)
+			numberReturnNode((ReturnNode) x);
+		else if (x instanceof SuperNode)
+			numberSuperNode((SuperNode) x);
+		else if (x instanceof BreakNode)
+			numberBreakNode((BreakNode) x);
+			
+	}
+
 	/*--- (Métodos para exibir os nós) ---*/
 	
 	public void printClassDeclListNode(ListNode x) {
