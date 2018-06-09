@@ -935,9 +935,8 @@ ExpreNode alocexpression(RecoverySet g) throws ParseEOFException :
 }
 {
   t1 = < NEW >
-  (LOOKAHEAD(2)
-    t2 = < IDENT > < LPAREN > l = arglist(f1) < RPAREN >
-    { e1 = new NewObjectNode(t1, t2, l); } 
+  ( LOOKAHEAD(2) t2 = < IDENT > < LPAREN > l = arglist(f1) < RPAREN >
+    { e1 = new NewObjectNode(t1, t2, l); }
   | ( t2 = < INT >
     | t2 = < STRING >
     | t2 = < FLOAT >
@@ -948,16 +947,15 @@ ExpreNode alocexpression(RecoverySet g) throws ParseEOFException :
     | t2 = < NOT >
     | t2 = < AND >
     | t2 = < IDENT > )
-    ( < LBRACKET > e2 = expression(f2) < RBRACKET > {
-                if ( l == null )
-                   l = new ListNode(e2);
-                else
-                   l.add(e2);
-              }
-       )+
-          { e1 = new NewArrayNode(t1, t2, l); }
-    )
-    { return e1; }
+    ( < LBRACKET > e2 = expression(f2) < RBRACKET >
+      { if (l == null) 
+        l = new ListNode(e2);
+        else 
+        l.add(e2); }
+    )+
+    { e1 = new NewArrayNode(t1, t2, l); }
+  )
+  { return e1; }
 }
 
 ExpreNode expression(RecoverySet g) throws ParseEOFException :
