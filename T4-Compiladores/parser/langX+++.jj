@@ -934,6 +934,7 @@ ExpreNode lvalue(RecoverySet g) throws ParseEOFException :
   }
 }
 
+/*--- Programa 6.33 ---*/
 ExpreNode alocexpression(RecoverySet g) throws ParseEOFException :
 {
   RecoverySet 	f1 = new RecoverySet(RPAREN).union(g), 
@@ -1012,57 +1013,48 @@ Token t = null;
 
 }
 
+/*--- Programa 6.45 ---*/
 ExpreNode numexpression(RecoverySet g) throws ParseEOFException :
 {
-ExpreNode e1 = null, e2 = null;
-Token t = null;
-
+  ExpreNode e1 = null, e2 = null;
+  Token t = null;
 }
 {
-try {
-    e1 = numexpr() 
-    [
-      ( t = <LT> | t = <GT> | t = <LE> | t = <GE> | t = <EQ> | t = <NEQ>)
-      e2 = numexpr()
-        { e1 = new RelationalNode(t, e1, e2); }
-    ] 
+  try
+  {
+    e1 = numexpr()
+    [ (t = < LT > | t = < GT > | t = < LE > | t = < GE > | t = < EQ > | t = < NEQ >) e2 = numexpr()
+      { e1 = new RelationalNode(t, e1, e2); } ]
     { return e1; }
-} 
-catch (ParseException e)
-{
-   consumeUntil(g, e, "expression");
-   return new RelationalNode(t, e1, e2);
-}
+  }
+  catch (ParseException e)
+  {
+    return new RelationalNode(t, e1, e2);
+  }
 }
 
+/*--- Programa 6.48 ---*/
 ExpreNode numexpr() throws ParseEOFException :
 {
-ExpreNode e1 = null, e2;
-Token t;
+  ExpreNode e1 = null, e2;
+  Token t;
 }
 {
-    e1 = term() 
-    (
-       (t = <PLUS> | t = <MINUS>) 
-       e2 = term()
-         { e1 = new AddNode(t, e1, e2); }
-    )*
-    {return e1; }
+  e1 = term() ( ( t = < PLUS > | t = < MINUS > ) e2 = term()
+    { e1 = new AddNode(t, e1, e2); } )*
+  { return e1; }
 }
 
+/*--- Programa 6.49 ---*/
 ExpreNode term() throws ParseEOFException :
 {
-ExpreNode e1 = null, e2;
-Token t;
+  ExpreNode e1 = null, e2;
+  Token t;
 }
 {
-    e1 = unaryexpr() 
-    (
-       ( t = <STAR> | t = <SLASH>| t = <REM>) 
-       e2 = unaryexpr()
-         { e1 = new MultNode(t, e1, e2); }
-    )*
-    { return e1; }
+  e1 = unaryexpr() ( ( t = < STAR > | t = < SLASH > | t = < REM > ) e2 = unaryexpr()
+    { e1 = new MultNode(t, e1, e2); } )*
+  { return e1; }
 }
 
 ExpreNode unaryexpr() throws ParseEOFException :
