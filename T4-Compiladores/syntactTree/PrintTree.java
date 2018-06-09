@@ -54,6 +54,15 @@ public class PrintTree {
 		numberListNode(x.next);
 	}
 	
+	/*--- Programa 7.7 ---*/
+	public void numberMethodBodyNode(MethodBodyNode x) {
+		
+		if (x == null) return;
+		x.number = kk++;
+		numberVarDeclListNode(x.param);
+		numberStatementNode(x.stat);
+	}
+	
 	/*--- (Métodos para exibir os nós) ---*/
 	
 	public void printClassDeclListNode(ListNode x) {
