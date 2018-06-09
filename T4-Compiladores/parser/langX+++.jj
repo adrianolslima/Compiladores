@@ -804,6 +804,7 @@ ReadNode readstat(RecoverySet g) throws ParseEOFException :
   }
 }
 
+/*--- Programa 6.36 ---*/
 ReturnNode returnstat(RecoverySet g) throws ParseEOFException :
 {
   ExpreNode e1 = null;
@@ -822,23 +823,25 @@ ReturnNode returnstat(RecoverySet g) throws ParseEOFException :
   }
 }
 
+/*--- Programa 6.36 ---*/
 SuperNode superstat(RecoverySet g) throws ParseEOFException :
 {
-ListNode l = null;
-Token t = null;
-
-RecoverySet f = new RecoverySet(RPAREN).union(g);
+  RecoverySet f = new RecoverySet(RPAREN).union(g);
+  
+  ListNode l = null;
+  Token t = null;
 }
 {
-try {
-    t = <SUPER> <LPAREN> l = arglist(f) <RPAREN>
-      { return new SuperNode(t, l); }
-}
-catch (ParseException e)
-{
-   consumeUntil(g, e, "superstat");
-   return new SuperNode(t, l);
-}
+  try
+  {
+    t = < SUPER > < LPAREN > l = arglist(f) < RPAREN >
+    { return new SuperNode(t, l); }
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "superstat");
+    return new SuperNode(t, l);
+  }
 }
 
 IfNode ifstat(RecoverySet g) throws ParseEOFException :
