@@ -37,6 +37,14 @@ public class PrintTree {
 		numberMethodDeclListNode(x.mlist);
 	}
 	
+	/*--- Programa 7.5 ---*/
+	public void numberListNode(ListNode x) {
+		
+		if (x == null) return;
+		//numer x.node
+		numberListNode(x.next);
+	}
+	
 	/*--- (Métodos para exibir os nós) ---*/
 	
 	public void printClassDeclListNode(ListNode x) {
