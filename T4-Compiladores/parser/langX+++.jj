@@ -587,8 +587,8 @@ VarDeclNode vardecl(RecoverySet g) throws ParseEOFException : // atualizado: ret
 /*--- Programa 6.13 ---*/
 ConstructDeclNode constructdecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna ConstructDeclNode
 {
-Token t = null; // incluído
-MethodBodyNode m = null; // incluído
+  Token t = null; // incluído
+  MethodBodyNode m = null; // incluído
 }
 {
   try
@@ -655,14 +655,15 @@ MethodBodyNode methodbody(RecoverySet g) throws ParseEOFException :
   }
 }
 
+/*--- Programa 6.18 ---*/
 ListNode paramlist(RecoverySet g) throws ParseEOFException :
 {
 //	RecoverySet f1 = new RecoverySet(IDENT).union(g);
+
 	ListNode p = null, q = null;
 	int k = 0;
-	Token t1 = null;
-	Token t2 = null;
-	ExpreNode e1 = null;
+	Token t1 = null, t2 = null;
+//	ExpreNode e1 = null;
 }
 {
   try
@@ -677,12 +678,14 @@ ListNode paramlist(RecoverySet g) throws ParseEOFException :
     | t1 = < XOR >
     | t1 = < NOT >
     | t1 = < AND >
-    | t1 = < IDENT >) t2 = < IDENT > (< LBRACKET > < RBRACKET >) *    
-    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) *
-    {
-     q = new ListNode(new VarNode(t2, k));
-     p = new ListNode(new VarDeclNode(t1, q));
-    }
+    | t1 = < IDENT > )
+    t2 = < IDENT > ( < LBRACKET > < RBRACKET > { k++; } ) *    
+//    (t1 = <ASSIGN> ( e1 = alocexpression(g) | e1 = expression(g) )
+    ) *
+      {
+        q = new ListNode(new VarNode(t2, k));
+        p = new ListNode(new VarDeclNode(t1, q));
+      }
       (< COMMA > { k = 0; }
       (t1 = < INT >
     | t1 = < STRING >
@@ -693,14 +696,16 @@ ListNode paramlist(RecoverySet g) throws ParseEOFException :
     | t1 = < XOR >
     | t1 = < NOT >
     | t1 = < AND >
-    | t1 = < IDENT >) t2 = < IDENT > (< LBRACKET > < RBRACKET >) *
-    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) *) *
-     {
-     q = new ListNode(new VarNode(t2, k));
-     p = new ListNode(new VarDeclNode(t1, q));
-    }
+    | t1 = < IDENT > )
+    t2 = < IDENT > ( < LBRACKET > < RBRACKET > { k++; } ) *
+//    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) *
+    ) *
+      {
+        q = new ListNode(new VarNode(t2, k));
+        p = new ListNode(new VarDeclNode(t1, q));
+      }
     ]
-    {  return p; }
+    { return p; }
   }
   catch (ParseException e)
   {
