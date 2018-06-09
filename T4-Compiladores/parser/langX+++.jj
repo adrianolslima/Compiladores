@@ -1057,6 +1057,7 @@ ExpreNode term() throws ParseEOFException :
   { return e1; }
 }
 
+/*--- Programa 6.52 ---*/
 ExpreNode unaryexpr() throws ParseEOFException :
 {
   ExpreNode e;
@@ -1067,31 +1068,22 @@ ExpreNode unaryexpr() throws ParseEOFException :
   { return ((t == null) ? e : new UnaryNode(t, e)); }
 }
 
+/*--- Programa 6.43 ---*/
 ExpreNode factor() throws ParseEOFException :
 {
-ExpreNode e = null;
-Token t;
-
+  ExpreNode e = null;
+  Token t;
 }
-{    
-    ( 
-       t = <int_constant> { e = new IntConstNode(t); }
-    | 
-       t = <string_constant> { e = new StringConstNode(t); }
-    |
-       t = <boolean_constant> { e = new BooleanConstNode(t);} 
-    |
-       t = <char_constant> { e = new CharConstNode(t);} 
-    |
-       t = <float_constant> { e = new FloatConstNode(t);} 
-    | 
-       t = <null_constant> { e = new NullConstNode(t); }
-    |
-       e = lvalue(null) 
-    |
-       <LPAREN> e = expression(null) <RPAREN>
-    )
-    { return e; }
+{
+  ( t = < int_constant > { e = new IntConstNode(t); }
+  | t = < string_constant > { e = new StringConstNode(t); }
+  | t = < boolean_constant > { e = new BooleanConstNode(t); }
+  | t = < char_constant > { e = new CharConstNode(t); }
+  | t = < float_constant > { e = new FloatConstNode(t); }
+  | t = < null_constant > { e = new NullConstNode(t); }
+  | e = lvalue(null)
+  | < LPAREN > e = expression(null) < RPAREN > )
+  { return e; }
 }
 
 /*--- Programa 6.32 ---*/
