@@ -603,11 +603,12 @@ MethodBodyNode m = null; // incluído
 }
 }
 
+/*--- Programa 6.13 ---*/
 MethodDeclNode methoddecl(RecoverySet g) throws ParseEOFException :
 {
   Token t1 = null, t2 = null;
-	int k = 0;
-	MethodBodyNode m = null;
+  int k = 0;
+  MethodBodyNode m = null;
 }
 {
   try
