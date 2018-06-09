@@ -138,6 +138,15 @@ public class PrintTree {
 		else if (x instanceof VarNode)
 			numberVarNode((VarNode) x);
 	}
+	
+	/*--- Programa 7.10 ---*/	
+	public void numberAddNode(AddNode x) {
+		
+		if (x == null) return;
+		x.number = kk++;
+		numberExpreNode(x.expr1);
+		numberExpreNode(x.expr2);
+	}
 
 	/*--- (Métodos para exibir os nós) ---*/
 	
