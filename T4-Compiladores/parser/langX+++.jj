@@ -898,35 +898,30 @@ ListNode statlist(RecoverySet g) throws ParseEOFException :
   { return new ListNode(s, l); }
 }
 
+/*--- Programa 6.28 ---*/
 ExpreNode lvalue(RecoverySet g) throws ParseEOFException :
 {
-ExpreNode e1 = null,
-          e2 = null;
-Token t1 = null,
-      t2 = null;
-ListNode l = null;
+  ExpreNode e1 = null, e2 = null;
+  Token t1 = null, t2 = null;
+  ListNode l = null;
 }
 {
-try {
-   t1 = <IDENT> { e1 = new VarNode(t1); }
-   (
-       t1 = <LBRACKET> e2 = expression(null) <RBRACKET> 
-         { e1 = new IndexNode(t1, e1, e2); } 
-   |
-       LOOKAHEAD(3)
-       t1 = <DOT> t2 = <IDENT> <LPAREN> l = arglist(null) <RPAREN>
-         { e1 = new CallNode(t1, e1, t2, l); }
-   |
-       t1 = <DOT> t2 = <IDENT>
-         { e1 = new DotNode(t1, e1, t2); }
-   )*
-   { return e1;}
-}
-catch (ParseException e)
-{
-   consumeUntil(g, e, "lvalue");
-   return new VarNode(t1);
-}
+  try
+  {
+    t1 = < IDENT > { e1 = new VarNode(t1); }
+    ( t1 = < LBRACKET > e2 = expression(null) < RBRACKET >
+    { e1 = new IndexNode(t1, e1, e2); }
+  | LOOKAHEAD(3)
+    t1 = < DOT > t2 = < IDENT > < LPAREN > l = arglist(null) < RPAREN >
+    { e1 = new CallNode(t1, e1, t2, l); }
+  | t1 = < DOT > t2 = < IDENT >
+    { e1 = new DotNode(t1, e1, t2); } ) *
+    { return e1; } }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "lvalue");
+    return new VarNode(t1);
+  }
 }
 
 ExpreNode alocexpression(RecoverySet g) throws ParseEOFException :
