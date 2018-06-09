@@ -868,30 +868,31 @@ IfNode ifstat(RecoverySet g) throws ParseEOFException :
   }
 }
 
+/*--- Programa 6.44 ---*/
 ForNode forstat(RecoverySet g) throws ParseEOFException :
 {
-AtribNode s1 = null,
-          s2 = null;
-StatementNode s3 = null;
-ExpreNode e1 = null;
-Token t = null;
-
-RecoverySet f1 = new RecoverySet(SEMICOLON).union(g),
-            f2 = new RecoverySet(RPAREN).union(g);
+  RecoverySet 	f1 = new RecoverySet(SEMICOLON).union(g), 
+  				f2 = new RecoverySet(RPAREN).union(g);
+  				
+  AtribNode s1 = null, s2 = null;
+  StatementNode s3 = null;
+  ExpreNode e1 = null;
+  Token t = null;
 }
 {
-try {
-    t = <FOR> <LPAREN> [s1 = atribstat(f1)] <SEMICOLON>
-                   [e1 = expression(f1)] <SEMICOLON>
-                   [s2 = atribstat(f2)] <RPAREN>
-                    s3 = statement(g)
-   { return new ForNode(t, e1, s1, s2, s3); }
-}
-catch (ParseException e)
-{
-   consumeUntil(g, e, "forstat");
-   return new ForNode(t, e1, s1, s2, s3);
-}
+  try
+  {
+    t = < FOR > < LPAREN > [ s1 = atribstat(f1) ] < SEMICOLON > 
+    [ e1 = expression(f1) ] < SEMICOLON > 
+    [ s2 = atribstat(f2) ] < RPAREN > 
+    s3 = statement(g)
+    { return new ForNode(t, e1, s1, s2, s3); }
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "forstat");
+    return new ForNode(t, e1, s1, s2, s3);
+  }
 }
 
 /*--- Programa 6.21 ---*/
