@@ -26,6 +26,15 @@ public class PrintTree {
 
 	/*--- Métodos para numerar os nós ---*/
 
+	/*--- Programa 7.6 ---*/
+	public void numberClassDeclListNode(ListNode x) {
+
+		if (x == null) return;
+		x.number = kk++;
+		numberClassDeclNode((ClassDeclNode) x.node);
+		numberClassDeclListNode(x.next);
+	}
+	
 	/*--- Programa 7.4 ---*/
 	public void numberClassBodyNode(ClassBodyNode x) {
 		
