@@ -633,24 +633,26 @@ MethodDeclNode methoddecl(RecoverySet g) throws ParseEOFException :
   }
 }
 
+/*--- Programa 6.16 ---*/
 MethodBodyNode methodbody(RecoverySet g) throws ParseEOFException :
 {
-	Token t1 = null;
-	ListNode l = null;
-	StatementNode s = null;
-	
-	RecoverySet f = new RecoverySet(RPAREN).union(g);
-	}
-	{
-	try {
-	    t1 = <LPAREN> l = paramlist(f) <RPAREN> s = statement(g)
-	      { return new MethodBodyNode(t1, l, s); }
-	}
-	catch (ParseException e)
-	{
-	   consumeUntil(g, e, "methodbody");
-	   return new MethodBodyNode(t1, l, s);
-	}
+  Token t1 = null;
+  ListNode l = null;
+  StatementNode s = null;
+  
+  RecoverySet f = new RecoverySet(RPAREN).union(g);
+}
+{
+  try
+  {
+    t1 = < LPAREN > l = paramlist(f) < RPAREN > s = statement(g)
+    { return new MethodBodyNode(t1, l, s); }
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "methodbody");
+    return new MethodBodyNode(t1, l, s);
+  }
 }
 
 ListNode paramlist(RecoverySet g) throws ParseEOFException :
