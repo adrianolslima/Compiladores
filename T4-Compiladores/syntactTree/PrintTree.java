@@ -2,6 +2,7 @@
 
 package syntactTree;
 
+import jdk.nashorn.internal.codegen.CompilerConstants.Call;
 import parser.*;
 
 public class PrintTree {
@@ -91,6 +92,7 @@ public class PrintTree {
 			
 	}
 	
+	/*--- Programa 7.9 ---*/	
 	public void numberIfNode(IfNode x) {
 
 		if (x == null) return;
@@ -98,6 +100,43 @@ public class PrintTree {
 		numberExpreNode(x.expr);
 		numberStatementNode(x.stat1);
 		numberStatementNode(x.stat2);
+	}
+	
+	/*--- Programa 7.10 ---*/	
+	public void numberExpreNode(ExpreNode x) {
+		
+		if (x instanceof NewObjectNode)
+			numberNewObjectNode((NewObjectNode) x);
+		else if (x instanceof NewArrayNode)
+			numberNewArrayNode((NewArrayNode) x);
+		else if (x instanceof RelationalNode)
+			numberRelationalNode((RelationalNode) x);
+		else if (x instanceof AddNode)
+			numberAddNode((AddNode) x);
+		else if (x instanceof MultNode)
+			numberMultNode((MultNode) x);
+		else if (x instanceof UnaryNode)
+			numberUnaryNode((UnaryNode) x);
+		else if (x instanceof CallNode)
+			numberCallNode((CallNode) x);
+		else if (x instanceof IntConstNode)
+			numberIntConstNode((IntConstNode) x);
+		else if (x instanceof StringConstNode)
+			numberStringConstNode((StringConstNode) x);
+		else if (x instanceof FloatConstNode)
+			numberFloatConstNode((FloatConstNode) x);
+		else if (x instanceof BooleanConstNode)
+			numberBooleanConstNode((BooleanConstNode) x);
+		else if (x instanceof CharConstNode)
+			numberCharConstNode((CharConstNode) x);
+		else if (x instanceof NullConstNode)
+			numberNullConstNode((NullConstNode) x);
+		else if (x instanceof IndexNode)
+			numberIndexNode((IndexNode) x);
+		else if (x instanceof DotNode)
+			numberDotNode((DotNode) x);
+		else if (x instanceof VarNode)
+			numberVarNode((VarNode) x);
 	}
 
 	/*--- (Métodos para exibir os nós) ---*/
