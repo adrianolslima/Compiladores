@@ -546,12 +546,13 @@ ClassBodyNode classbodystatement(RecoverySet g) throws ParseEOFException : // at
   }
 }
 
-VarDeclNode vardecl(RecoverySet g) throws ParseEOFException :
+/*--- Programa 6.10 ---*/
+VarDeclNode vardecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna VarDeclNode
 {
-  Token t1 = null, t2;
-  int k = 0;
-  ListNode l = null;
-  ExpreNode e1 = null;
+  Token t1 = null, t2; // incluído
+  int k = 0; // incluído
+  ListNode l = null; // incluído
+//  ExpreNode e1 = null; // incluído
 }
 {
   try
@@ -566,19 +567,20 @@ VarDeclNode vardecl(RecoverySet g) throws ParseEOFException :
   | t1 = < NOT >
   | t1 = < AND >
   | t1 = < IDENT >) 
-    t2 = < IDENT > (< LBRACKET > < RBRACKET > { k++; }) *
+	t2 = < IDENT > (< LBRACKET > < RBRACKET > { k++; } ) *
     { l = new ListNode(new VarNode(t2, k)); }
-    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) * 
+//    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) * 
     (< COMMA > { k = 0; } t2 = < IDENT > (< LBRACKET > < RBRACKET > { k++; }) *
 	{ l.add(new VarNode(t2, k)); }
-    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) *) *
+//    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) *
+) *
 
     { return new VarDeclNode(t1, l); }
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "vardecl");
-     return new VarDeclNode(t1, l);
+    return new VarDeclNode(t1, l); // incluído
   }
 }
 
