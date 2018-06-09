@@ -680,8 +680,7 @@ ListNode paramlist(RecoverySet g) throws ParseEOFException :
     | t1 = < AND >
     | t1 = < IDENT > )
     t2 = < IDENT > ( < LBRACKET > < RBRACKET > { k++; } ) *    
-//    (t1 = <ASSIGN> ( e1 = alocexpression(g) | e1 = expression(g) )
-    ) *
+//    (t1 = <ASSIGN> ( e1 = alocexpression(g) | e1 = expression(g) ) ) *
       {
         q = new ListNode(new VarNode(t2, k));
         p = new ListNode(new VarDeclNode(t1, q));
@@ -714,44 +713,31 @@ ListNode paramlist(RecoverySet g) throws ParseEOFException :
   }
 }
 
+/*--- Programa 6.19 ---*/
 StatementNode statement(RecoverySet g) throws ParseEOFException :
 {
-    StatementNode s = null;
-	ListNode l;
-	Token t1 = null;
-	
   RecoverySet f1 = new RecoverySet(SEMICOLON).union(g).remove(IDENT);
   RecoverySet f2 = new RecoverySet(RBRACE).union(g).remove(IDENT);
+  
+  StatementNode s = null;
+  ListNode l;
+  Token t1 = null;
 }
 {
   try
   {
-    LOOKAHEAD(<IDENT> <IDENT>)
-    s = vardecl(f1) <SEMICOLON> 
-|
-    LOOKAHEAD(1)
-    s = atribstat(f1) <SEMICOLON>
-|
-    s = vardecl(f1) <SEMICOLON> 
-|
-    s = printstat(f1) <SEMICOLON>
-|
-    s = readstat(f1) <SEMICOLON>
-|
-    s = returnstat(f1) <SEMICOLON>
-|
-    s = superstat(f1) <SEMICOLON>
-|
-    s = ifstat(g)
-|
-    s = forstat(g)
-|
-    t1 = <LBRACE> l = statlist(f2) <RBRACE> { s = new BlockNode(t1, l); }
-|
-    t1 = <BREAK> <SEMICOLON> { s = new BreakNode(t1);}
-|
-    t1 = <SEMICOLON> { s = new NopNode(t1); }
-
+    LOOKAHEAD(< IDENT > < IDENT >) s = vardecl(f1) < SEMICOLON >
+  | LOOKAHEAD(1) s = atribstat(f1) < SEMICOLON >
+  | s = vardecl(f1) < SEMICOLON >
+  | s = printstat(f1) < SEMICOLON >
+  | s = readstat(f1) < SEMICOLON >
+  | s = returnstat(f1) < SEMICOLON >
+  | s = superstat(f1) < SEMICOLON >
+  | s = ifstat(g)
+  | s = forstat(g)
+  | t1 = < LBRACE > l = statlist(f2) < RBRACE > { s = new BlockNode(t1, l); }
+  | t1 = < BREAK > < SEMICOLON > { s = new BreakNode(t1); }
+  | t1 = < SEMICOLON > { s = new NopNode(t1); }
     { return s; }
   }
   catch (ParseException e)
