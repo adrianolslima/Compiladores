@@ -365,7 +365,7 @@ void program() throws ParseEOFException :
   RecoverySet g = First.program;
 }
 {
-  [ classlist(g) ] 
+  [ classlist(g) ]
   try
   {
     < EOF >
@@ -374,7 +374,6 @@ void program() throws ParseEOFException :
   {
     consumeUntil(g, e, "program");
   }
-//  [ program() ]
 }
 
 void classlist(RecoverySet g) throws ParseEOFException :
@@ -431,15 +430,15 @@ void classbodyprestatement(RecoverySet g) throws ParseEOFException :
 
 void classbodystatement(RecoverySet g) throws ParseEOFException :
 {
-  RecoverySet 	f2 = new RecoverySet(SEMICOLON).union(g).remove(IDENT), 
-  				f3 = First.methoddecl.union(g).remove(IDENT), 
-  				f4 = First.constructdecl.union(f3).remove(IDENT), 
-  				f5 = First.vardecl.union(f4).remove(IDENT);
+  RecoverySet     f2 = new RecoverySet(SEMICOLON).union(g).remove(IDENT),
+                  f3 = First.methoddecl.union(g).remove(IDENT),
+                  f4 = First.constructdecl.union(f3).remove(IDENT),
+                  f5 = First.vardecl.union(f4).remove(IDENT);
 }
 {
   try
   {
-    < LBRACE > 
+    < LBRACE >
     classlist(f5)
   | LOOKAHEAD(3) vardecl(f2) < SEMICOLON >
   | LOOKAHEAD(3) atribstat(f2) < SEMICOLON >
