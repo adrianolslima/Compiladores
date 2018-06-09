@@ -26,15 +26,20 @@ public class PrintTree {
 
 	/*--- Métodos para numerar os nós ---*/
 
-	private void numberClassDeclListNode(ListNode x) {
-		// TODO Auto-generated method stub
+	/*--- Programa 7.4 ---*/
+	public void numberClassBodyNode(ClassBodyNode x) {
 		
+		if (x == null) return;
+		x.number = kk++;
+		numberClassDeclListNode(x.clist);
+		numberVarDeclListNode(x.vlist);
+		numberConstructDeclListNode(x.ctlist);
+		numberMethodDeclListNode(x.mlist);
 	}
-	
 	
 	/*--- (Métodos para exibir os nós) ---*/
 	
-	private void printClassDeclListNode(ListNode x) {
+	public void printClassDeclListNode(ListNode x) {
 		// TODO Auto-generated method stub
 		
 	}
