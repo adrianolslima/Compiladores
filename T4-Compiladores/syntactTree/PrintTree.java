@@ -90,6 +90,15 @@ public class PrintTree {
 			numberBreakNode((BreakNode) x);
 			
 	}
+	
+	public void numberIfNode(IfNode x) {
+
+		if (x == null) return;
+		x.number = kk++;
+		numberExpreNode(x.expr);
+		numberStatementNode(x.stat1);
+		numberStatementNode(x.stat2);
+	}
 
 	/*--- (Métodos para exibir os nós) ---*/
 	
