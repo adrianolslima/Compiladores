@@ -63,6 +63,9 @@ Token lastError = null;
       if (args [i].equals("-debug_recovery")) 
       debug_recovery = true;
       else
+      if (args [i].equals("-print_tree"))
+      print_tree = true;
+      else
       {
         System.out.println("Usage is: java langX [-debug_AS] " + 
         "[-debug_recovery] inputfile");
