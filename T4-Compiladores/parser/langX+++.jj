@@ -12,47 +12,17 @@ PARSER_BEGIN(langX)
 package parser;
 
 import java.io.*;
-<<<<<<< HEAD
-import recovery.*; // importa as classes de recuperção de erros do AS
-import syntactTree.*; // importado para permitir a utilização do objeto da classe syntactTree. 
-=======
 import recovery.*; // importa as classes de recuperÃ§Ã£o de erros do AS
 import syntactTree.*; // importado para permitir a utilizaÃ§Ã£o do objeto da classe syntactTree. 
->>>>>>> refs/remotes/origin/master
 
 public class langX {
 final static String Version = "X+++ Compiler - Version 1.0 - 2018";
-<<<<<<< HEAD
-int contParseError = 0; // contador de erros sintáticos
-boolean debug_recovery; // controla verbose de recuperção de erros
-=======
 int contParseError = 0; // contador de erros sintÃ¡ticos
 boolean debug_recovery; // controla verbose de recuperÃ§Ã£o de erros
->>>>>>> refs/remotes/origin/master
 Token lastError = null;
 
 //Programa 9.6
 
-<<<<<<< HEAD
-//if ( parser.token_source.foundLexError() // verifica se pode operar sobre
-//          + parser.contParseError == 0)  // a árvore sintática
-//    {
-//        if (print_tree) // exibir a árvore
-//        {
-//            PrintTree prt = new PrintTree();
-//            prt.printRoot(root); // chama método para imprimir árvore
-//        }
-//        TypeCheck tc = new TypeCheck();
-//        try {
-//             tc.TypeCheckRoot(root);
-//             System.out.println("0 Semantic Errors found");
-//        }
-//        catch (SemanticException e)
-//        {
-//            System.out.println(e.getMessage());
-//        }
-//   }
-=======
 //if ( parser.token_source.foundLexError() // verifica se pode operar sobre
 //          + parser.contParseError == 0)  // a Ã¡rvore sintÃ¡tica
 //    {
@@ -71,7 +41,6 @@ Token lastError = null;
 //            System.out.println(e.getMessage());
 //        }
 //   }
->>>>>>> refs/remotes/origin/master
 
 // Define o mtodo "main" da classe langX.  
   public  static void main(String args[]) throws ParseException 
@@ -351,11 +320,7 @@ TOKEN :
 }
 
 
-<<<<<<< HEAD
-/* Trata os erros léxicos */
-=======
 /* Trata os erros lÃ©xicos */
->>>>>>> refs/remotes/origin/master
 SPECIAL_TOKEN :
 {
 <INVALID_LEXICAL: 
@@ -427,23 +392,15 @@ SPECIAL_TOKEN :
 ListNode program() throws ParseEOFException : // atualizado: retorna ListNode
 {
   RecoverySet g = First.program;
-<<<<<<< HEAD
   
-  ListNode l = null, d = null; // incluído
-=======
   ListNode l = null, d = null; // incluÃ­do
->>>>>>> refs/remotes/origin/master
 }
 {
   [ l = classlist(g) ] // atualizado
   try
   {
     < EOF >
-<<<<<<< HEAD
-    {return l;} // incluído
-=======
     {return l;} // incluÃ­do
->>>>>>> refs/remotes/origin/master
   }
   catch (ParseException e)
   {
@@ -451,44 +408,17 @@ ListNode program() throws ParseEOFException : // atualizado: retorna ListNode
   }
   	[ d = program() ] //Adicionado 
   {
-<<<<<<< HEAD
-    return l; // incluído
-=======
     return l; // incluÃ­do
->>>>>>> refs/remotes/origin/master
   }
 }
 
-<<<<<<< HEAD
-/*--- Programa 6.7 ---*/
+/*--- Programa 6.6 e 6.7 ---*/
 ListNode classlist(RecoverySet g) throws ParseEOFException : // atualizado: retorna ListNode
 {
   RecoverySet f = First.classlist.union(g);
   
-  ClassDeclNode c = null; // incluído
-  ListNode l = null; // incluído
-}
-{
-  (
-    c = classdecl(f) // atualizado
-    {
-      if (l == null) 
-      l = new ListNode(c);
-      else 
-      l.add(c);
-    }
-  )+
-  {
-    return l;
-  }
-}
-=======
-/*--- Programa 6.6 e 6.7 ---*/
-ListNode classlist(RecoverySet g) throws ParseEOFException : // atualizado: retorna ListNode
-{
   ClassDeclNode c = null; // incluÃ­do
   ListNode l = null; // incluÃ­do
-  RecoverySet f = First.classlist.union(g);
 }
 {
   (
@@ -504,30 +434,7 @@ ListNode classlist(RecoverySet g) throws ParseEOFException : // atualizado: reto
     return l;
   }
 }
->>>>>>> refs/remotes/origin/master
 
-<<<<<<< HEAD
-/*--- Programa 6.2 ---*/ 
-ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna ClassDeclNode
-{
-  Token t1, t2, t3 = null; // incluído
-  ClassBodyNode c1 = null; // incluído
-}
-{
-  try
-  {
-    t1 = < CLASS > t2 = < IDENT > [ < EXTENDS > t3 = < IDENT > ] c1 = classbody(g)
-    {
-      return new ClassDeclNode(t1, t2, t3, c1);
-    }
-  }
-  catch (ParseException e)
-  {
-    consumeUntil(g, e, "classdecl");
-    return new ClassDeclNode(t1, t2, t3, c1); // incluído
-  }
-}
-=======
 /*--- Programa 6.2 ---*/
 ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna ClassDeclNode
 {
@@ -548,8 +455,6 @@ ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException : // atualizado:
     return new ClassDeclNode(t1, t2, t3, c1); // incluÃ­do
   }
 }
->>>>>>> refs/remotes/origin/master
-
 
 void classbody(RecoverySet g) throws ParseEOFException :
 {
@@ -583,35 +488,23 @@ void classbodyprestatement(RecoverySet g) throws ParseEOFException :
 
 /*--- Programa 6.8 ---*/
 ClassBodyNode classbodystatement(RecoverySet g) throws ParseEOFException : // atualizado: retorna ClassBodyNode
-<<<<<<< HEAD
-{  
-=======
 {
+  RecoverySet 	f2 = new RecoverySet(SEMICOLON).union(g).remove(IDENT), 
+  				f3 = First.methoddecl.union(g).remove(IDENT), 
+  				f4 = First.constructdecl.union(f3).remove(IDENT), 
+  				f5 = First.vardecl.union(f4).remove(IDENT);
+
   ListNode c, v, ct, m = null; // incluÃ­do
   VarDeclNode vd; // incluÃ­do
   ConstructDeclNode cd; // incluÃ­do
   MethodDeclNode md; // incluÃ­do
   Token t = null; // incluÃ­do
-  
->>>>>>> refs/remotes/origin/master
-  RecoverySet 	f2 = new RecoverySet(SEMICOLON).union(g).remove(IDENT), 
-  				f3 = First.methoddecl.union(g).remove(IDENT), 
-  				f4 = First.constructdecl.union(f3).remove(IDENT), 
-  				f5 = First.vardecl.union(f4).remove(IDENT);
-  				
-  ListNode c, v, as, ct, m = null; // incluído
-  VarDeclNode vd; // incluído
-  AtribNode an; // incluído
-  ConstructDeclNode cd; // incluído
-  MethodDeclNode md; // incluído
-  Token t = null; // incluído
 }
 {
   try
   {
     t = < LBRACE > // atualizado
     c = classlist(f5) // atualizado
-<<<<<<< HEAD
   	LOOKAHEAD(3) vd = vardecl(f2) < SEMICOLON > // atualizado
     {
       if (v == null) 
@@ -641,34 +534,23 @@ ClassBodyNode classbodystatement(RecoverySet g) throws ParseEOFException : // at
       v.add(md);
     }
 //  | < EOF >
-=======
-  | LOOKAHEAD(3) vd = vardecl(f2) < SEMICOLON > // atualizado
-  | LOOKAHEAD(3) atribstat(f2) < SEMICOLON >
-  | constructdecl(f4)
-  | methoddecl(f3)
-  | < EOF >
->>>>>>> refs/remotes/origin/master
     < RBRACE >
-<<<<<<< HEAD
-    { return new ClassBodyNode(t, c, v, as, ct, m); } // incluído
-=======
-    { return new ClassBodyNode(t, c, v, ct, m);
->>>>>>> refs/remotes/origin/master
+    { return new ClassBodyNode(t, c, v, as, ct, m); } // incluÃ­do
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "classbodystatement");
-    return new ClassBodyNode(t, c, v, as, ct, m); // incluído
+    return new ClassBodyNode(t, c, v, as, ct, m); // incluï¿½do
   }
 }
 
 /*--- Programa 6.10 ---*/
 VarDeclNode vardecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna VarDeclNode
 {
-  Token t1 = null, t2; // incluído
-  int k = 0; // incluído
-  ListNode l = null; // incluído
-//  ExpreNode e1 = null; // incluído
+  Token t1 = null, t2; // incluï¿½do
+  int k = 0; // incluï¿½do
+  ListNode l = null; // incluï¿½do
+//  ExpreNode e1 = null; // incluï¿½do
 }
 {
   try
@@ -696,26 +578,26 @@ VarDeclNode vardecl(RecoverySet g) throws ParseEOFException : // atualizado: ret
   catch (ParseException e)
   {
     consumeUntil(g, e, "vardecl");
-    return new VarDeclNode(t1, l); // incluído
+    return new VarDeclNode(t1, l); // incluï¿½do
   }
 }
 
 /*--- Programa 6.13 ---*/
 ConstructDeclNode constructdecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna ConstructDeclNode
 {
-  Token t = null; // incluído
-  MethodBodyNode m = null; // incluído
+  Token t = null; // incluï¿½do
+  MethodBodyNode m = null; // incluï¿½do
 }
 {
   try
   {
     t = < CONSTRUCTOR > m = methodbody(g) // atualizado
-    { return new ConstructDeclNode(t, m); } // incluído
+    { return new ConstructDeclNode(t, m); } // incluï¿½do
 }
   catch (ParseException e)
 {
    consumeUntil(g, e, "constructdecl");
-   return new ConstructDeclNode(t, m); // incluído
+   return new ConstructDeclNode(t, m); // incluï¿½do
 }
 }
 
@@ -752,11 +634,11 @@ MethodDeclNode methoddecl(RecoverySet g) throws ParseEOFException :
 /*--- Programa 6.16 ---*/
 MethodBodyNode methodbody(RecoverySet g) throws ParseEOFException :
 {
+  RecoverySet f = new RecoverySet(RPAREN).union(g);
+  
   Token t1 = null;
   ListNode l = null;
   StatementNode s = null;
-  
-  RecoverySet f = new RecoverySet(RPAREN).union(g);
 }
 {
   try
@@ -1002,16 +884,17 @@ catch (ParseException e)
 }
 }
 
+/*--- Programa 6.21 ---*/
 ListNode statlist(RecoverySet g) throws ParseEOFException :
 {
-ListNode l = null;
-StatementNode s = null;
-
-RecoverySet f = First.statlist.remove(IDENT).union(g);
+  RecoverySet f = First.statlist.remove(IDENT).union(g);
+  
+  ListNode l = null;
+  StatementNode s = null;
 }
 {
-   s = statement(f) [ l = statlist(g)]
-    { return new ListNode(s, l); }
+  s = statement(f) [ l = statlist(g) ]
+  { return new ListNode(s, l); }
 }
 
 ExpreNode lvalue(RecoverySet g) throws ParseEOFException :
