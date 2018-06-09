@@ -12,8 +12,8 @@ PARSER_BEGIN(langX)
 package parser;
 
 import java.io.*;
-import recovery.*; // importa as classes de recuperção de erros do AS
-import syntactTree.*; // importado para permitir a utilização do objeto da classe syntactTree. 
+import recovery.*; // importa as classes de recuperação de erros do AS
+import syntactTree.*; // importa as classes dos nós da árvore sintática 
 
 public class langX {
 final static String Version = "X+++ Compiler - Version 1.0 - 2018";
@@ -49,12 +49,12 @@ Token lastError = null;
   	boolean debug_recovery = false;
     
     String filename = ""; // nome do arquivo a ser analisado
-    langX parser;     // analisador lxico/sinttico
+    langX parser; // analisador léxico/sintático
     int i;
     boolean ms = false;
 
     System.out.println(Version);
-    // l os parmetros passados para o compilador
+    // lê os parâmetros passados para o compilador
     for (i = 0; i < args.length - 1; i++)
     {
       if (args [i].equals("-debug_AS")) 
@@ -71,12 +71,12 @@ Token lastError = null;
     }
 
     if (args [i].equals("-"))
-    { // l da entrada padro      
+    { // lê da entrada padrão      
       System.out.println("Reading from standard input . . .");
       parser = new langX(System.in); // cria AS
     }
     else
-    { // l do arquivo
+    { // lê do arquivo
       filename = args [args.length - 1];
       System.out.println("Reading from file " + filename + " . . .");
       try
@@ -95,7 +95,7 @@ Token lastError = null;
     if (!debug_as) parser.disable_tracing(); // desab. verbose do AS
     try
     {
-      root = parser.program(); // chama o mtodo que faz a anlise
+      root = parser.program(); // chama o método que faz a análise
     }
     catch (ParseEOFException e)
     {
@@ -126,10 +126,10 @@ Token lastError = null;
     return s;
   }
 
-  boolean eof; // varivel que indica se EOF foi alcanado
+  boolean eof; // variável que indica se EOF foi alcançado
 
-  // o mtodo abaixo consome tokens at alcanar um que pertena ao conjunto
-  // de sincronizao
+  // o método abaixo consome tokens até alcançar um que pertença ao conjunto
+  // de sincronização
   void consumeUntil(RecoverySet g, 
   ParseException e, 
   String met) throws ParseEOFException, 
@@ -351,7 +351,7 @@ SPECIAL_TOKEN :
   "\t",
   "\f",
 
-/*----Atualizaes----*/
+/*--- Atualizações ---*/
 
   "'"
 
@@ -389,27 +389,25 @@ SPECIAL_TOKEN :
 
 /*--- Programa 6.4 ---*/
 //Revisar
-ListNode program() throws ParseEOFException : // atualizado: retorna ListNode
+ListNode program() throws ParseEOFException :
 {
   RecoverySet g = First.program;
   
-  ListNode l = null, d = null; // incluído
+  ListNode l = null, d = null;
 }
 {
-  [ l = classlist(g) ] // atualizado
+  [ l = classlist(g) ] 
   try
   {
     < EOF >
-    {return l;} // incluído
+    { return l; }
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "program");
   }
-  	[ d = program() ] //Adicionado 
-  {
-    return l; // incluído
-  }
+//  [ d = program() ] 
+  { return l; }
 }
 
 /*--- Programa 6.6 e 6.7 ---*/
@@ -436,10 +434,10 @@ ListNode classlist(RecoverySet g) throws ParseEOFException : // atualizado: reto
 }
 
 /*--- Programa 6.2 ---*/
-ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna ClassDeclNode
+ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException :
 {
-  Token t1, t2, t3 = null; // incluído
-  ClassBodyNode c1 = null; // incluído
+  Token t1 = null, t2 = null, t3 = null;
+  ClassBodyNode c1 = null;
 }
 {
   try
@@ -452,95 +450,105 @@ ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException : // atualizado:
   catch (ParseException e)
   {
     consumeUntil(g, e, "classdecl");
-    return new ClassDeclNode(t1, t2, t3, c1); // incluído
+    return new ClassDeclNode(t1, t2, t3, c1);
   }
 }
 
-void classbody(RecoverySet g) throws ParseEOFException :
+ClassBodyNode classbody(RecoverySet g) throws ParseEOFException :
 {
+  ClassBodyNode cbn = null;
+  ListNode c = null, v = null, as = null, ct = null, m = null;
+  Token t = null;
 }
 {
   try
   {
     < LBRACE > 
-    [ classbodyprestatement(g) ] 
+    [ cbn = classbodyprestatement(g) ] 
     < RBRACE >
+    { return cbn; }
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "classbody");
+    return new ClassBodyNode(t, c, v, as, ct, m);
   }
 }
 
-void classbodyprestatement(RecoverySet g) throws ParseEOFException :
+/*--- Atualização ---*/
+ClassBodyNode classbodyprestatement(RecoverySet g) throws ParseEOFException :
 {
+  ClassBodyNode cbn = null;
+  ListNode c = null, v = null, as = null, ct = null, m = null;
+  Token t = null;
 }
 {
   try
   {
-    classbodystatement(g) [ classbodyprestatement(g) ]
+    cbn = classbodystatement(g) [ classbodyprestatement(g) ]
+    { return cbn; }
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "classbodyprestatement");
+    return new ClassBodyNode(t, c, v, as, ct, m);
   }
 }
 
 /*--- Programa 6.8 ---*/
-ClassBodyNode classbodystatement(RecoverySet g) throws ParseEOFException : // atualizado: retorna ClassBodyNode
+ClassBodyNode classbodystatement(RecoverySet g) throws ParseEOFException :
 {
   RecoverySet 	f2 = new RecoverySet(SEMICOLON).union(g).remove(IDENT), 
   				f3 = First.methoddecl.union(g).remove(IDENT), 
   				f4 = First.constructdecl.union(f3).remove(IDENT), 
   				f5 = First.vardecl.union(f4).remove(IDENT);
 
-  ListNode c, v, ct, m = null; // incluído
-  VarDeclNode vd; // incluído
-  ConstructDeclNode cd; // incluído
-  MethodDeclNode md; // incluído
-  Token t = null; // incluído
+  ListNode c = null, v = null, as = null, ct = null, m = null;
+  VarDeclNode vd;
+  AtribNode an;
+  ConstructDeclNode cd;
+  MethodDeclNode md;
+  Token t = null;
 }
 {
   try
   {
-    t = < LBRACE > // atualizado
-    c = classlist(f5) // atualizado
-  	LOOKAHEAD(3) vd = vardecl(f2) < SEMICOLON > // atualizado
-    {
-      if (v == null) 
+    t = < LBRACE >
+    c = classlist(f5)
+  	LOOKAHEAD(3) vd = vardecl(f2) < SEMICOLON >
+    { if (v == null) 
       v = new ListNode(vd);
       else 
       v.add(vd);
     }
-  	LOOKAHEAD(3) an = atribstat(f2) < SEMICOLON > // atualizado
-  	{ 
-      if (as == null) 
+  	LOOKAHEAD(3) an = atribstat(f2) < SEMICOLON >
+  	{ if (as == null) 
       as = new ListNode(an);
       else 
-      v.add(an);
+      as.add(an);
     }
-  	cd = constructdecl(f4) // atualizado
+  	cd = constructdecl(f4)
   	{ 
       if (ct == null) 
       ct = new ListNode(cd);
       else 
-      v.add(cd);
+      ct.add(cd);
     }
-    md = methoddecl(f3) // atualizado
+    md = methoddecl(f3)
     {
       if (m == null) 
       m = new ListNode(md);
       else 
-      v.add(md);
+      m.add(md);
     }
 //  | < EOF >
     < RBRACE >
-    { return new ClassBodyNode(t, c, v, as, ct, m); } // incluído
+    { return new ClassBodyNode(t, c, v, as, ct, m); }
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "classbodystatement");
-    return new ClassBodyNode(t, c, v, as, ct, m); // inclu�do
+    return new ClassBodyNode(t, c, v, as, ct, m);
   }
 }
 
