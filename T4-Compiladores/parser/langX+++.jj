@@ -926,15 +926,12 @@ ExpreNode lvalue(RecoverySet g) throws ParseEOFException :
 
 ExpreNode alocexpression(RecoverySet g) throws ParseEOFException :
 {
-
-  ExpreNode e1 = null,
-          e2 = null;
-	ListNode l = null;
-	Token t1, t2 = null;
-
-	
   RecoverySet 	f1 = new RecoverySet(RPAREN).union(g), 
   				f2 = new RecoverySet(RBRACKET).union(g);
+
+  ExpreNode e1 = null, e2 = null;
+  ListNode l = null;
+  Token t1, t2 = null;
 }
 {
   t1 = < NEW >
@@ -1098,20 +1095,16 @@ Token t;
     { return e; }
 }
 
+/*--- Programa 6.32 ---*/
 ListNode arglist(RecoverySet g) throws ParseEOFException :
 {
-ListNode l = null;
-ExpreNode e = null;
-
-RecoverySet f =  new RecoverySet(COMMA).union(g);
+  RecoverySet f = new RecoverySet(COMMA).union(g);
+  
+  ListNode l = null;
+  ExpreNode e = null;
 }
 {
-    [
-       e = expression(f) 
-          { l = new ListNode(e); }
-       (<COMMA> e = expression(f)
-          { l.add(e);}
-       )*
-    ]
-    { return l;}
+  [ e = expression(f) { l = new ListNode(e); }
+    ( < COMMA > e = expression(f) { l.add(e); } )* ]
+  { return l; }
 }
