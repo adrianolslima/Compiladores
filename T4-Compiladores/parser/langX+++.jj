@@ -745,12 +745,13 @@ StatementNode statement(RecoverySet g) throws ParseEOFException :
   }
 }
 
+/*--- Programa 6.26 ---*/
 AtribNode atribstat(RecoverySet g) throws ParseEOFException :
 {
-ExpreNode e1 = null, e2 = null;
-Token t1 = null;
+  RecoverySet f1 = new RecoverySet(ASSIGN).union(g);
 
-RecoverySet f1 = new RecoverySet(ASSIGN).union(g);
+  ExpreNode e1 = null, e2 = null;
+  Token t1 = null;
 }
 {
 try {
