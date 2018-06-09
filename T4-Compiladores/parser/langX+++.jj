@@ -584,20 +584,22 @@ VarDeclNode vardecl(RecoverySet g) throws ParseEOFException : // atualizado: ret
   }
 }
 
-ConstructDeclNode constructdecl(RecoverySet g) throws ParseEOFException :
+/*--- Programa 6.13 ---*/
+ConstructDeclNode constructdecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna ConstructDeclNode
 {
-Token t = null;
-MethodBodyNode m = null;
+Token t = null; // incluído
+MethodBodyNode m = null; // incluído
 }
 {
-try {
-    t = <CONSTRUCTOR> m = methodbody(g)
-       { return new ConstructDeclNode(t, m);}
+  try
+  {
+    t = < CONSTRUCTOR > m = methodbody(g) // atualizado
+    { return new ConstructDeclNode(t, m); } // incluído
 }
-catch (ParseException e)
+  catch (ParseException e)
 {
    consumeUntil(g, e, "constructdecl");
-   return new ConstructDeclNode(t, m);
+   return new ConstructDeclNode(t, m); // incluído
 }
 }
 
