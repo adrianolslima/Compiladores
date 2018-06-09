@@ -766,21 +766,23 @@ catch (ParseException e)
 }
 }
 
+/*--- Programa 6.36 ---*/
 PrintNode printstat(RecoverySet g) throws ParseEOFException :
 {
-ExpreNode e1 = null;
-Token t = null;
+  ExpreNode e1 = null;
+  Token t = null;
 }
 {
-try {
-    t = <PRINT> e1 = expression(g)
-      { return new PrintNode(t, e1); }
-}
-catch (ParseException e)
-{
-   consumeUntil(g, e, "printstat");
-   return new PrintNode(t, e1);
-}
+  try
+  {
+    t = < PRINT > e1 = expression(g)
+    { return new PrintNode(t, e1); }
+  }
+  catch (ParseException e)
+  {
+    consumeUntil(g, e, "printstat");
+    return new PrintNode(t, e1);
+  }
 }
 
 ReadNode readstat(RecoverySet g) throws ParseEOFException :
