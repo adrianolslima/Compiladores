@@ -2,7 +2,7 @@ package symtable;
 
 
 // corresponde a uma declaracao de metodo na tabela de simbolos
-public class EntryMethod extends EntryTable {
+abstract public class EntryMethod extends EntryTable {
     public EntryTable type; // tipo de retorno do metodo
     public int dim; // numero de dimensoes do retorno
     public EntryRec param; // tipo dos parametros
@@ -11,6 +11,8 @@ public class EntryMethod extends EntryTable {
     public boolean fake; // true se e um falso construtor
     public boolean hassuper; // true se metodo possui chamada super
 
+    abstract public String dscJava();
+    
     // cria elemento para inserir na tabela 
     public EntryMethod(String n, EntryTable p, int d, EntryRec r) {
         name = n;

@@ -13,7 +13,8 @@ package parser;
 
 import java.io.*;
 import recovery.*; // importa as classes de recuperação de erros do AS
-import syntactTree.*; // importa as classes dos nós da árvore sintática 
+import syntactTree.*; // importa as classes dos nós da árvore sintática
+import semanAnalysis.*; // importa as classes para a an�lise sem�ntica
 
 public class langX {
 final static String Version = "X+++ Compiler - Version 1.0 - 2018";
@@ -21,32 +22,12 @@ int contParseError = 0; // contador de erros sintáticos
 boolean debug_recovery; // controla verbose de recuperção de erros
 Token lastError = null;
 
-//Programa 9.6
-
-//if ( parser.token_source.foundLexError() // verifica se pode operar sobre
-//          + parser.contParseError == 0)  // a árvore sintática
-//    {
-//        if (print_tree) // exibir a árvore
-//        {
-//            PrintTree prt = new PrintTree();
-//            prt.printRoot(root); // chama método para imprimir árvore
-//        }
-//        TypeCheck tc = new TypeCheck();
-//        try {
-//             tc.TypeCheckRoot(root);
-//             System.out.println("0 Semantic Errors found");
-//        }
-//        catch (SemanticException e)
-//        {
-//            System.out.println(e.getMessage());
-//        }
-//   }
-
 // Define o mtodo "main" da classe langX.  
   public  static void main(String args[]) throws ParseException 
   {
     boolean debug_as = false;
   	boolean debug_recovery = false;
+  	boolean print_tree = false;
     
     String filename = ""; // nome do arquivo a ser analisado
     langX parser; // analisador léxico/sintático
@@ -57,18 +38,18 @@ Token lastError = null;
     // lê os parâmetros passados para o compilador
     for (i = 0; i < args.length - 1; i++)
     {
-      if (args [i].equals("-debug_AS")) 
+      if (args[i].equals("-debug_AS")) 
       debug_as = true;
       else 
-      if (args [i].equals("-debug_recovery")) 
+      if (args[i].equals("-debug_recovery")) 
       debug_recovery = true;
       else
-      if (args [i].equals("-print_tree"))
+      if (args[i].equals("-print_tree"))
       print_tree = true;
       else
       {
         System.out.println("Usage is: java langX [-debug_AS] " + 
-        "[-debug_recovery] inputfile");
+        "[-debug_recovery] [-print_tree] inputfile");
         System.exit(0);
       }
     }
@@ -111,6 +92,26 @@ Token lastError = null;
       System.out.println(parser.contParseError + " Syntactic Errors found");
     }
 
+    // Verifica se pode imprimir a árvore sintática
+    if ( parser.token_source.foundLexError() // verifica se pode operar sobre
+          + parser.contParseError == 0)      // a �rvore sint�tica
+    {
+        if (print_tree) // exibir a �rvore
+        {
+            PrintTree prt = new PrintTree();
+            prt.printRoot(root);     // chama m�todo para imprimir �rvore
+        }
+        ClassCheck tc = new ClassCheck();
+        try {
+             tc.ClassCheckRoot(root);
+             System.out.println("0 Semantic Errors found");
+        }
+        catch (SemanticException e)
+        {
+            System.out.println(e.getMessage());
+        }
+   }
+
 }  // main
 
   static public String im(int x)
@@ -140,7 +141,7 @@ Token lastError = null;
   {
     Token tok;
 
-    if (debug_recovery) // informao sobre a recuperao
+    if (debug_recovery) // informação sobre a recuperação
     {
       System.out.println();
       System.out.println("*** " + met + " ***");
@@ -188,7 +189,7 @@ TOKEN_MGR_DECLS :
   }
 }
 
-/* Espaos a serem desprezados no incio de cada token */
+/* Espaços a serem desprezados no incio de cada token */
 
 SKIP :
 {
@@ -391,7 +392,6 @@ SPECIAL_TOKEN :
 }
 
 /*--- Programa 6.4 ---*/
-//Revisar
 ListNode program() throws ParseEOFException :
 {
   RecoverySet g = First.program;
@@ -413,27 +413,22 @@ ListNode program() throws ParseEOFException :
   { return l; }
 }
 
-/*--- Programa 6.6 e 6.7 ---*/
-ListNode classlist(RecoverySet g) throws ParseEOFException : // atualizado: retorna ListNode
+/*--- Programa 6.7 ---*/
+ListNode classlist(RecoverySet g) throws ParseEOFException :
 {
   RecoverySet f = First.classlist.union(g);
   
-  ClassDeclNode c = null; // incluído
-  ListNode l = null; // incluído
+  ClassDeclNode c = null;
+  ListNode l = null;
 }
 {
-  (
-    c = classdecl(f) // atualizado
-    {
-      if (l == null) 
+  ( c = classdecl(f)
+    { if (l == null) 
       l = new ListNode(c);
       else 
       l.add(c);
-    }
-  )+
-  {
-    return l;
-  }
+    } )+
+  { return l; }
 }
 
 /*--- Programa 6.2 ---*/
@@ -446,9 +441,7 @@ ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException :
   try
   {
     t1 = < CLASS > t2 = < IDENT > [ < EXTENDS > t3 = < IDENT > ] c1 = classbody(g)
-    {
-      return new ClassDeclNode(t1, t2, t3, c1);
-    }
+    { return new ClassDeclNode(t1, t2, t3, c1); }
   }
   catch (ParseException e)
   {
@@ -457,49 +450,8 @@ ClassDeclNode classdecl(RecoverySet g) throws ParseEOFException :
   }
 }
 
-ClassBodyNode classbody(RecoverySet g) throws ParseEOFException :
-{
-  ClassBodyNode cbn = null;
-  ListNode c = null, v = null, as = null, ct = null, m = null;
-  Token t = null;
-}
-{
-  try
-  {
-    < LBRACE > 
-    [ cbn = classbodyprestatement(g) ] 
-    < RBRACE >
-    { return cbn; }
-  }
-  catch (ParseException e)
-  {
-    consumeUntil(g, e, "classbody");
-    return new ClassBodyNode(t, c, v, as, ct, m);
-  }
-}
-
-/*--- Atualização ---*/
-ClassBodyNode classbodyprestatement(RecoverySet g) throws ParseEOFException :
-{
-  ClassBodyNode cbn = null;
-  ListNode c = null, v = null, as = null, ct = null, m = null;
-  Token t = null;
-}
-{
-  try
-  {
-    cbn = classbodystatement(g) [ classbodyprestatement(g) ]
-    { return cbn; }
-  }
-  catch (ParseException e)
-  {
-    consumeUntil(g, e, "classbodyprestatement");
-    return new ClassBodyNode(t, c, v, as, ct, m);
-  }
-}
-
 /*--- Programa 6.8 ---*/
-ClassBodyNode classbodystatement(RecoverySet g) throws ParseEOFException :
+ClassBodyNode classbody(RecoverySet g) throws ParseEOFException :
 {
   RecoverySet 	f2 = new RecoverySet(SEMICOLON).union(g).remove(IDENT), 
   				f3 = First.methoddecl.union(g).remove(IDENT), 
@@ -517,51 +469,49 @@ ClassBodyNode classbodystatement(RecoverySet g) throws ParseEOFException :
   try
   {
     t = < LBRACE >
-    c = classlist(f5)
-  	LOOKAHEAD(3) vd = vardecl(f2) < SEMICOLON >
+    [ c = classlist(f5) ] 
+ 	( 	  LOOKAHEAD(3) vd = vardecl(f2) < SEMICOLON >
     { if (v == null) 
       v = new ListNode(vd);
       else 
       v.add(vd);
     }
-  	LOOKAHEAD(3) an = atribstat(f2) < SEMICOLON >
+    | LOOKAHEAD(3) an = atribstat(f2) < SEMICOLON >
   	{ if (as == null) 
       as = new ListNode(an);
       else 
       as.add(an);
     }
-  	cd = constructdecl(f4)
-  	{ 
-      if (ct == null) 
+    | cd = constructdecl(f4)
+  	{ if (ct == null) 
       ct = new ListNode(cd);
       else 
       ct.add(cd);
     }
-    md = methoddecl(f3)
-    {
-      if (m == null) 
+    | md = methoddecl(f3)
+    { if (m == null) 
       m = new ListNode(md);
       else 
       m.add(md);
-    }
-//  | < EOF >
+    } ) *
     < RBRACE >
     { return new ClassBodyNode(t, c, v, as, ct, m); }
   }
   catch (ParseException e)
   {
-    consumeUntil(g, e, "classbodystatement");
+    consumeUntil(g, e, "classbody");
     return new ClassBodyNode(t, c, v, as, ct, m);
   }
 }
 
 /*--- Programa 6.10 ---*/
-VarDeclNode vardecl(RecoverySet g) throws ParseEOFException : // atualizado: retorna VarDeclNode
+/*--- Programa 6.10 ---*/
+VarDeclNode vardecl(RecoverySet g) throws ParseEOFException :
 {
-  Token t1 = null, t2; // inclu�do
-  int k = 0; // inclu�do
-  ListNode l = null; // inclu�do
-//  ExpreNode e1 = null; // inclu�do
+  Token t1 = null, t2 = null, t3 = null;
+  int k = 0;
+  ListNode l = null;
+  ExpreNode e1 = null;
 }
 {
   try
@@ -577,19 +527,26 @@ VarDeclNode vardecl(RecoverySet g) throws ParseEOFException : // atualizado: ret
   | t1 = < AND >
   | t1 = < IDENT >) 
 	t2 = < IDENT > (< LBRACKET > < RBRACKET > { k++; } ) *
-    { l = new ListNode(new VarNode(t2, k)); }
-//    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) * 
+    (t3 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) * 
+      { if (t3 != null) {
+        l = new ListNode(new VarNode(t2, k, t3, e1));
+      } else { 
+        l = new ListNode(new VarNode(t2, k));
+      } }      
     (< COMMA > { k = 0; } t2 = < IDENT > (< LBRACKET > < RBRACKET > { k++; }) *
-	{ l.add(new VarNode(t2, k)); }
-//    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) *
-) *
-
+    (t3 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) *
+      { if (t3 != null) {
+        l.add(new VarNode(t2, k, t3, e1));
+      } else { 
+        l.add(new VarNode(t2, k));
+      } }
+    ) *
     { return new VarDeclNode(t1, l); }
   }
   catch (ParseException e)
   {
     consumeUntil(g, e, "vardecl");
-    return new VarDeclNode(t1, l); // inclu�do
+    return new VarDeclNode(t1, l);
   }
 }
 
@@ -669,16 +626,15 @@ ListNode paramlist(RecoverySet g) throws ParseEOFException :
 {
 //	RecoverySet f1 = new RecoverySet(IDENT).union(g);
 
-	ListNode p = null, q = null;
+	ListNode l = null, p = null;
 	int k = 0;
-	Token t1 = null, t2 = null;
-//	ExpreNode e1 = null;
+	Token t1 = null, t2 = null, t3 = null;
+	ExpreNode e1 = null;
 }
 {
   try
   {
-    [
-      (t1 = < INT >
+    [ (t1 = < INT >
     | t1 = < STRING >
     | t1 = < FLOAT >
     | t1 = < BOOLEAN >
@@ -689,11 +645,14 @@ ListNode paramlist(RecoverySet g) throws ParseEOFException :
     | t1 = < AND >
     | t1 = < IDENT > )
     t2 = < IDENT > ( < LBRACKET > < RBRACKET > { k++; } ) *    
-//    (t1 = <ASSIGN> ( e1 = alocexpression(g) | e1 = expression(g) ) ) *
-      {
-        q = new ListNode(new VarNode(t2, k));
-        p = new ListNode(new VarDeclNode(t1, q));
-      }
+    (t3 = <ASSIGN> ( e1 = alocexpression(g) | e1 = expression(g) ) ) *
+      { if (t3 != null) {
+        l = new ListNode(new VarNode(t2, k, t3, e1));
+        p = new ListNode(new VarDeclNode(t1, l));
+      } else { 
+        l = new ListNode(new VarNode(t2, k));
+        p = new ListNode(new VarDeclNode(t1, l));
+      } }      
       (< COMMA > { k = 0; }
       (t1 = < INT >
     | t1 = < STRING >
@@ -706,12 +665,15 @@ ListNode paramlist(RecoverySet g) throws ParseEOFException :
     | t1 = < AND >
     | t1 = < IDENT > )
     t2 = < IDENT > ( < LBRACKET > < RBRACKET > { k++; } ) *
-//    (t1 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) *
+    (t3 = <ASSIGN> ( e1 = alocexpression(g) |  e1 = expression(g))) *
+      { if (t3 != null) {
+        l = new ListNode(new VarNode(t2, k, t3, e1));
+        p.add(new VarDeclNode(t1, l));
+      } else { 
+        l = new ListNode(new VarNode(t2, k));
+        p.add(new VarDeclNode(t1, l));
+      } }
     ) *
-      {
-        q = new ListNode(new VarNode(t2, k));
-        p = new ListNode(new VarDeclNode(t1, q));
-      }
     ]
     { return p; }
   }
@@ -735,9 +697,9 @@ StatementNode statement(RecoverySet g) throws ParseEOFException :
 {
   try
   {
-    LOOKAHEAD(< IDENT > < IDENT >) s = vardecl(f1) < SEMICOLON >
-  | LOOKAHEAD(1) s = atribstat(f1) < SEMICOLON >
-  | s = vardecl(f1) < SEMICOLON >
+    (      LOOKAHEAD(2) s = vardecl(f1) < SEMICOLON >
+  | s = atribstat(f1) < SEMICOLON >
+//  | s = vardecl(f1) < SEMICOLON >
   | s = printstat(f1) < SEMICOLON >
   | s = readstat(f1) < SEMICOLON >
   | s = returnstat(f1) < SEMICOLON >
@@ -746,7 +708,7 @@ StatementNode statement(RecoverySet g) throws ParseEOFException :
   | s = forstat(g)
   | t1 = < LBRACE > l = statlist(f2) < RBRACE > { s = new BlockNode(t1, l); }
   | t1 = < BREAK > < SEMICOLON > { s = new BreakNode(t1); }
-  | t1 = < SEMICOLON > { s = new NopNode(t1); }
+  | t1 = < SEMICOLON > { s = new NopNode(t1); } )
     { return s; }
   }
   catch (ParseException e)
@@ -980,68 +942,61 @@ ExpreNode alocexpression(RecoverySet g) throws ParseEOFException :
   { return e1; }
 }
 
+/*--- Atualização ---*/
 ExpreNode expression(RecoverySet g) throws ParseEOFException :
-{
-
-ExpreNode e1 = null, e2 = null;
-Token t = null;
-}
-{
-  try
-  {	
-  	e1 = logicexpression(g) ( ( t = < XOR > | t = < OR > ) e2 = logicexpression(g) )*
-	{e1 = new RelationalLogicNode(t, e1, e2);}
-
-	{return e1;}
-  }
-  catch (ParseException e)
-  {
-    consumeUntil(g, e, "expression");
-	return new RelationalLogicNode(t, e1, e2);
-  }
-}
-
-ExpreNode logicexpression(RecoverySet g) throws ParseEOFException :
-{
-ExpreNode e1 = null, e2;
-Token t = null;
-}
-{
-   e1 = notexpression(g) ( t = < AND > e2 = notexpression(g) { e1 = new RelationalNotNode(t, e1, e2); }
-)*
-	{return e1; }
-}
-
-ExpreNode notexpression(RecoverySet g) throws ParseEOFException :
-{
-ExpreNode e1 = null;
-Token t = null;
-}
-{
-  [ t = < NOT > ] e1 = numexpression(g)
-{ e1 = new RelationalAndNode(t, e1);}
-{return e1;}
-
-}
-
-/*--- Programa 6.45 ---*/
-ExpreNode numexpression(RecoverySet g) throws ParseEOFException :
 {
   ExpreNode e1 = null, e2 = null;
   Token t = null;
 }
 {
   try
-  {
-    e1 = numexpr()
-    [ (t = < LT > | t = < GT > | t = < LE > | t = < GE > | t = < EQ > | t = < NEQ >) e2 = numexpr()
-      { e1 = new RelationalNode(t, e1, e2); } ]
+  {	
+    e1 = logicexpression() ( ( t = < XOR > | t = < OR > ) e2 = logicexpression() ) *
+    { if (t != null ) { e1 = new RelationalLogicNode(t, e1, e2); } }
     { return e1; }
   }
   catch (ParseException e)
   {
-    return new RelationalNode(t, e1, e2);
+    consumeUntil(g, e, "expression");
+    return new RelationalLogicNode(t, e1, e2);
   }
+}
+
+/*--- Atualização ---*/
+ExpreNode logicexpression() throws ParseEOFException :
+{
+  ExpreNode e1 = null, e2 = null;
+  Token t = null;
+}
+{
+  e1 = notexpression() ( t = < AND > e2 = notexpression()
+    { e1 = new RelationalAndNode(t, e1, e2); } ) *
+  { return e1; }
+}
+
+/*--- Atualização ---*/
+ExpreNode notexpression() throws ParseEOFException :
+{
+  ExpreNode e1 = null;
+  Token t = null;
+}
+{
+  [ t = < NOT > ] e1 = numexpression()
+  { if (t != null ) { e1 = new RelationalNotNode(t, e1); } }
+  { return e1; }
+}
+
+/*--- Programa 6.45 ---*/
+ExpreNode numexpression() throws ParseEOFException :
+{
+  ExpreNode e1 = null, e2 = null;
+  Token t = null;
+}
+{
+  e1 = numexpr()
+  [ ( t = < LT > | t = < GT > | t = < LE > | t = < GE > | t = < EQ > | t = < NEQ >) e2 = numexpr()
+    { e1 = new RelationalNode(t, e1, e2); } ]
+  { return e1; }
 }
 
 /*--- Programa 6.48 ---*/

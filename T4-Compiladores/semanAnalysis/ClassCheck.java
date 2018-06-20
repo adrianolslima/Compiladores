@@ -65,6 +65,7 @@ public class ClassCheck {
 
             // inclui classe na tabela corrente
             Curtable.add(nc = new EntryClass(x.name.image, Curtable));
+            System.out.println("Classe adicionada " + x.name.image);
             Curtable = nc.nested; // tabela corrente = tabela da classe
             ClassCheckClassBodyNode(x.body);
             Curtable = temphold; // recupera apontador p/ tabela corrente

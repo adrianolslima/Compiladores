@@ -22,4 +22,11 @@ public class EntryVar extends EntryTable {
         dim = d; // numero de dimensoes
         localcount = k; // inclui tbem o numero sequencial 
     }
+    
+    public String dscJava() {
+        String s = strDim(dim);
+        s += type.dscJava();
+
+        return s;
+    }
 }

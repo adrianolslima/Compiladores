@@ -1,13 +1,13 @@
 class test7 {
-	int testSevenMethodOne(int a = 0) {
+	int testSevenMethodOne(int a) {
 		return 0;
 	}
 	
-	int testSevenMethodTwo(string a = "abc") {
+	int testSevenMethodTwo(string a) {
 		return 0;
 	}
 	
-	int testSevenMethodThree(string a, float b = 2.1, boolean c) {
+	int testSevenMethodThree(string a, float b, boolean c) {
 		return 0;
 	}	
 	

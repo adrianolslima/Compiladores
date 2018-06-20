@@ -1,3 +1,0 @@
-method(){
-    return 0;
-}

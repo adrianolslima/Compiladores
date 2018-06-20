@@ -1,34 +1,21 @@
 package symtable;
 
-//classe geral para as possiveis entradas na tabela de simbolos
-abstract public class EntryTable {
- public String name; // nome do simbolo (var., metodo ou classe)
- public EntryTable next; // apontador para proximo dentro da tabela 
- public int scope; // numero do aninhamento corrente
- public Symtable mytable; // entrada aponta para a tabela da qual ela e parte
- 
- //Programa 9.4 do livro
- 
- EntryTable p = top;
- 
- //Para cada elemento da tabela corrente
- 
- public EntryTable classFindUp (String x)
- {
-	 while (p != null)
-	 {
-		 //verifica se Ã© uma entrada de classe ou tipo simples e entÃ£o compara o nome
-		 if(((p instanceof EntryClass) || (p instanceof EntrySimple) &&
-				 p.name.equals(x)))
-			 return p;
-		 
-		 p = p.next; //PrÃ³xima entrada
-	 }
-	 if (levelup == null) // se nÃ£o achou e Ã© o npivel mais externo
-		 return null;
-	 
-	 return levelup.mytable.classFindUp(x);
- } 
-}
 
-//Fim Programa 9.4 do livro
+//classe geral para as possíveis entradas na tabela de símbolos
+abstract public class EntryTable {
+ public String name; // nome do símbolo (var., método ou classe)
+ public EntryTable next; // apontador para próximo dentro da tabela 
+ public int scope; // número do aninhamento corrente
+ public Symtable mytable; // entrada aponta para a tabela da qual ela é parte
+
+ abstract public String dscJava();
+
+ static public String strDim(int n) {
+     String p = "";
+
+     for (int i = 0; i < n; i++)
+         p += "[";
+
+     return p;
+ }
+}

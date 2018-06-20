@@ -27,4 +27,18 @@ public class EntryRec extends EntryTable {
         next = t;
         opcional = op;
     }
+    
+    // devolve descritor da EntryRec
+    public String dscJava() {
+        String s;
+
+        s = strDim(dim);
+        s += type.dscJava();
+
+        if (next != null) {
+            s += next.dscJava();
+        }
+
+        return s;
+    }
 }
