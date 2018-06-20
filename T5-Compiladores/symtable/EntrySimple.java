@@ -1,18 +1,18 @@
+/*--- Programa 8.7 ---*/
 package symtable;
 
-
-// entrada utilizada para declarar os tipos básicos da linguagem
+// entrada utilizada para declarar os tipos bï¿½sicos da linguagem
 public class EntrySimple extends EntryTable {
-    public EntrySimple(String n) {
-        name = n;
-    }
+	public EntrySimple(String n) {
+		name = n;
+	}
 
-    public String dscJava() // devolve descritor de tipo
-     {
-        if (name.equals("int")) {
-            return "I";
-        } else {
-            return "Ljava/lang/String;"; // classe String JAVA
-        }
-    }
+	public String dscJava() // devolve descritor de tipo
+	{
+		if (name.equals("int")) {
+			return "I";
+		} else {
+			return "Ljava/lang/String;"; // classe String JAVA
+		}
+	}
 }
