@@ -1,5 +1,7 @@
 class test6 {
 	float testSixMethodOne() {
+	
+		int x, y, c;
 
    		if (x < 0) {
       		return 1;

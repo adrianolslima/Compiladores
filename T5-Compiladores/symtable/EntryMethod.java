@@ -1,10 +1,11 @@
 /*--- Programa 8.5 ---*/
-package symtable;
 
+package symtable;
 
 // corresponde a uma declaracao de metodo na tabela de simbolos
 public class EntryMethod extends EntryTable {
-    public EntryTable type; // tipo de retorno do metodo
+
+	public EntryTable type; // tipo de retorno do metodo
     public int dim; // numero de dimensoes do retorno
     public EntryRec param; // tipo dos parametros
     public int totallocals; // numero de variaveis locais

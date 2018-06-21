@@ -1,3 +1,5 @@
+/*--- Programa 10.1 ---*/
+
 package semanAnalysis;
 
 import symtable.*;
@@ -5,12 +7,12 @@ import syntactTree.*;
 
 public class VarCheck extends ClassCheck {
 
-	/*--- Programa 10.1 ---*/
 	public VarCheck() {
 		super();
 	}
 
 	public void VarCheckRoot(ListNode x) throws SemanticException {
+		
 		ClassCheckRoot(x); // faz análise das classes
 		VarCheckClassDeclListNode(x);
 
@@ -22,9 +24,7 @@ public class VarCheck extends ClassCheck {
 	/*--- Programa 10.2 ---*/
 	public void VarCheckClassDeclListNode(ListNode x) {
 
-		if (x == null) {
-			return;
-		}
+		if (x == null) return;
 
 		try {
 			VarCheckClassDeclNode((ClassDeclNode) x.node);
@@ -97,6 +97,7 @@ public class VarCheck extends ClassCheck {
 
 	/*--- Programa 10.5 ---*/
 	public void VarCheckVarDeclNode(VarDeclNode x) throws SemanticException {
+		
 		EntryTable c;
 		ListNode p;
 
@@ -105,12 +106,12 @@ public class VarCheck extends ClassCheck {
 		// acha entrada do tipo da variável
 		c = Curtable.classFindUp(x.position.image);
 
-		// se nÃ£o achou, ERRO
+		// se não achou, ERRO
 		if (c == null) {
 			throw new SemanticException(x.position, "Class " + x.position.image + " not found");
 		}
 
-		// para cada variÃ¡vel da declaracÃ£o, cria uma entrada na tabela
+		// para cada variável da declaracÃ£o, cria uma entrada na tabela
 		for (p = x.vars; p != null; p = p.next) {
 			VarNode q = (VarNode) p.node;
 			Curtable.add(new EntryVar(q.position.image, c, q.dim));

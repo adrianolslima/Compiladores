@@ -1,9 +1,11 @@
 /*--- Programa 8.6 ---*/
+
 package symtable;
 
 // lista de EntryClass, usada para representar os tipos de uma lista
 // de parametros
 public class EntryRec extends EntryTable {
+
 	public EntryTable type; // tipo de um objeto
 	public int dim; // dimensao
 	public EntryRec next; // apontador para o resto da lista
@@ -11,13 +13,21 @@ public class EntryRec extends EntryTable {
 	public boolean opcional;
 
 	// cria elemento
-	public EntryRec(EntryTable p, int d, int c, boolean op) {
+	public EntryRec(EntryTable p, int d, int c) {
 		type = p;
 		cont = c;
 		dim = d;
 		next = null;
-		opcional = op;
 	}
+
+//	// cria elemento
+//	public EntryRec(EntryTable p, int d, int c, boolean op) {
+//		type = p;
+//		cont = c;
+//		dim = d;
+//		next = null;
+//		opcional = op;
+//	}
 
 	// cria elemento e poe no inicio da lista
 	public EntryRec(EntryTable p, int d, int c, EntryRec t, boolean op) {
@@ -50,7 +60,7 @@ public class EntryRec extends EntryTable {
 		return s;
 	}
 
-	// devolve a representa��o da EntryRec na forma de string
+	// devolve a representação da EntryRec na forma de string
 	public String toStr() {
 		String s;
 
@@ -93,4 +103,28 @@ public class EntryRec extends EntryTable {
 
 		return r;
 	}
+
+    // verifica a igualdade de dois objetos do tipo EntryRec
+    public boolean equals(EntryRec x) {
+        EntryRec p;
+        EntryRec q;
+
+        if ((x == null) || (cont != x.cont)) {
+            return false;
+        }
+
+        p = this;
+        q = x;
+
+        do {
+            if ((p.type != q.type) || (p.dim != q.dim)) {
+                return false;
+            }
+
+            p = p.next;
+            q = q.next;
+        } while ((p != null) && (q != null));
+
+        return p == q; // null
+    }
 }

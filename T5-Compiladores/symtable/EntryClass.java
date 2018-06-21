@@ -1,8 +1,10 @@
 /*--- Programa 8.3 ---*/
+
 package symtable;
 
 //classe corresponde a uma declaracao de classe na tab. de simbolos
 public class EntryClass extends EntryTable {
+	
 	public Symtable nested; // tabela para declaracao de elementos aninhados
 	public EntryClass parent; // entrada correspondente a superclasse
 

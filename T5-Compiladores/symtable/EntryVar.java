@@ -1,8 +1,10 @@
 /*--- Programa 8.4 ---*/
+
 package symtable;
 
 // classe que abriga uma declaracao de variavel na tabela de simbolos
 public class EntryVar extends EntryTable {
+	
 	public EntryTable type; // apontador para o tipo da variavel
 	public int dim; // numero de dimensoes da variavel
 	public int localcount; // numeracao sequencial para as vars. locais

@@ -1,6 +1,7 @@
+/*--- Programa 8.1 ---*/
+
 package symtable;
 
-/*--- Programa 8.1 ---*/
 public class Symtable {
 	
     public EntryTable top; // apontador para o topo da tabela (mais recente)
@@ -45,30 +46,29 @@ public class Symtable {
 		scptr--; // finaliza aninhamento corrente
 	}
     
-  //Programa 9.4 do livro
-    
-    public EntryTable classFindUp(String x) {
-        EntryTable p = top;
+    /*--- Programa 9.4 ---*/
+	public EntryTable classFindUp(String x) {
+		
+		EntryTable p = top;
 
-        // para cada elemento da tabela corrente
-        while (p != null) {
-            // verifica se � uma entrada de classe ou tipo simples e compara o nome
-            if (((p instanceof EntryClass) || (p instanceof EntrySimple)) &&
-                    p.name.equals(x)) {
-                return p;
-            }
+		// para cada elemento da tabela corrente
+		while (p != null) {
+			// verifica se é uma entrada de classe ou tipo simples e compara o nome
+			if (((p instanceof EntryClass) || (p instanceof EntrySimple)) && p.name.equals(x)) {
+				return p;
+			}
 
-            p = p.next; // pr�xima entrada
-        }
+			p = p.next; // pr�xima entrada
+		}
 
-        if (levelup == null) { // se n�o achou e � o n�vel mais externo 
+		if (levelup == null) { // se não achou e é o nível mais externo
 
-            return null; // retorna null
-        }
+			return null; // retorna null
+		}
 
-        // procura no n�vel mais externo 
-        return levelup.mytable.classFindUp(x);
-    }
+		// procura no nível mais externo
+		return levelup.mytable.classFindUp(x);
+	}
 
 	/*--- Programa 10.7 ---*/
 	/*
@@ -140,11 +140,12 @@ public class Symtable {
 		return q.parent.nested.varFind(x, n);
 	}
 
-    
+    /*--- Program 11.25 ---*/
     /* Esse metodo procura o simbolo x com uma lista de parametros igual a r na
     tabela e tambem na(s) tabela(s) da(s)  superclasse(s), apontada por
     levelup.parent. Procura por uma entrada do  tipo EntryMethod */
     public EntryMethod methodFind(String x, EntryRec r) {
+    	
         EntryTable p = top;
         EntryClass q;
 

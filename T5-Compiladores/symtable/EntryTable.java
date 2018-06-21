@@ -1,13 +1,14 @@
 /*--- Programa 8.2 ---*/
+
 package symtable;
 
-//classe geral para as poss�veis entradas na tabela de s�mbolos
+//classe geral para as possíveis entradas na tabela de símbolos
 abstract public class EntryTable {
 	
-	public String name; // nome do s�mbolo (var., m�todo ou classe)
-	public EntryTable next; // apontador para pr�ximo dentro da tabela
+	public String name; // nome do s�mbolo (var., método ou classe)
+	public EntryTable next; // apontador para próximo dentro da tabela
 	public int scope; // n�mero do aninhamento corrente
-	public Symtable mytable; // entrada aponta para a tabela da qual ela � parte
+	public Symtable mytable; // entrada aponta para a tabela da qual ela é parte
 
 	abstract public String dscJava();
 

@@ -88,26 +88,6 @@ public class langX
       " Lexical Errors found");
       System.out.println(parser.contParseError + " Syntactic Errors found");
     }
-    // Verifica se pode imprimir a árvore sintática
-    if (parser.token_source.foundLexError()  // verifica se pode operar sobre
-    + parser.contParseError == 0) // a �rvore sint�tica
-    {
-      if (print_tree) // exibir a �rvore
-      {
-        PrintTree prt = new PrintTree();
-        prt.printRoot(root); // chama m�todo para imprimir �rvore
-      }
-      ClassCheck tc = new ClassCheck();
-      try
-      {
-        tc.ClassCheckRoot(root);
-        System.out.println("0 Semantic Errors found");
-      }
-      catch (SemanticException e)
-      {
-        System.out.println(e.getMessage());
-      }
-    }
     /*--- Programa 11.3 ---*/
     if (parser.token_source.foundLexError()  // verifica se pode operar sobre
     + parser.contParseError == 0) // a árvore sintática
