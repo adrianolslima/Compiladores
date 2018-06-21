@@ -1,6 +1,6 @@
 class test5 {
 	
-	boolean k, z;
+	boolean k, y;
 	k =  false;
 	z = true;
 }

@@ -763,6 +763,7 @@ public class PrintTree {
         
     	if (x == null) return;
         x.number = kk++;
+        numberExpreNode(x.exp);
     }
 
     public void printVarNode(VarNode x) {

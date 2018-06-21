@@ -1,9 +1,10 @@
 class test6 {
 	float testSixMethodOne() {
 	
-		int x, y, c;
+		int x, y;
+		string c;
 
-   		if (x < 0) {
+   		if (x < y) {
       		return 1;
    		}
    		

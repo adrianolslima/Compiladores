@@ -41,8 +41,7 @@ public class TypeCheck extends VarCheck {
 		}
 	}
 
-	/*--- Programa 11.5 ---*/
-	// ------------- lista de classes --------------------------
+	/*--- Programa 11.5: lista de classes ---*/
 	public void TypeCheckClassDeclListNode(ListNode x) {
 		
 		if (x == null) return;
@@ -102,11 +101,12 @@ public class TypeCheck extends VarCheck {
 
 		TypeCheckClassDeclListNode(x.clist);
 		TypeCheckVarDeclListNode(x.vlist);
+		TypeCheckAtribListNode(x.aslist);
 		TypeCheckConstructDeclListNode(x.ctlist);
 		TypeCheckMethodDeclListNode(x.mlist);
 	}
 
-	// ---------------- Lista de declarac�es de vari�veis ----------------
+	// ---------------- Lista de declaracões de variáveis ----------------
 	public void TypeCheckVarDeclListNode(ListNode x) {
 		if (x == null) {
 			return;
@@ -122,18 +122,19 @@ public class TypeCheck extends VarCheck {
 		TypeCheckVarDeclListNode(x.next);
 	}
 
-	/*--- Programa 11.7 ---*/
-	// -------------------- Declaracão de variável --------------------
+	/*--- Programa 11.7: declaracão de variável ---*/
 	public void TypeCheckVarDeclNode(VarDeclNode x) throws SemanticException {
+		
 		ListNode p;
 		EntryVar l;
+		VarNode q;
 
 		if (x == null) {
 			return;
 		}
 
 		for (p = x.vars; p != null; p = p.next) {
-			VarNode q = (VarNode) p.node;
+			q = (VarNode) p.node;
 
 			// tenta pegar 2a. ocorrência da variável na tabela
 			l = Curtable.varFind(q.position.image, 2);
@@ -143,6 +144,67 @@ public class TypeCheck extends VarCheck {
 				throw new SemanticException(q.position, "Variable " + q.position.image + " already declared");
 			}
 		}
+		
+
+		Type t1;
+		Type t2;
+		EntryVar v;
+		q = (VarNode) x.vars.node;
+//		
+		if (q.atrib == null) return;
+		
+
+////		// verifica se o nó filho tem um tipo válido
+//		if (!(q.exp instanceof DotNode || q.exp instanceof IndexNode || q.exp instanceof VarNode)) {
+//			throw new SemanticException(x.position, "Invalid left side of assignment");
+//		}
+
+		// verifica se é uma atribuição para "this"
+		if (q.exp instanceof VarNode) {
+			v = Curtable.varFind(q.exp.position.image);
+
+			if ((v != null) && (v.localcount == 0)) // é a variável local 0?
+			{
+				throw new SemanticException(x.position, "Assigning to variable " + " \"this\" is not legal");
+			}
+		}
+//
+		t1 = TypeCheckVarNode(q);
+		
+		t2 = TypeCheckExpreNode((ExpreNode) q.exp); 
+//
+		// verifica tipos das expressões
+		// verifica dimensões
+		if (t1.dim != t2.dim) {
+			throw new SemanticException(x.position, "Invalid dimensions in assignment");
+		}
+
+		// verifica se lado esquerdo é uma classe e direito é null, OK
+		if (t1.ty instanceof EntryClass && (t2.ty == NULL_TYPE)) {
+			return;
+		}
+
+		// verifica se t2 e subclasse de t1
+		if (!(isSubClass(t2.ty, t1.ty) || isSubClass(t1.ty, t2.ty))) {
+			throw new SemanticException(x.position, "Incompatible types for assignment ");
+		}
+		
+	}
+	
+	/*--- Atualização: ---*/
+	public void TypeCheckAtribListNode(ListNode x) {
+		
+		if (x == null) return;
+		
+		try {
+			TypeCheckAtribNode((AtribNode) x.node);
+		} catch (SemanticException e) {
+			System.out.println(e.getMessage());
+			foundSemanticError++;
+		}
+
+		TypeCheckAtribListNode(x.next);
+		
 	}
 
 	// -------------- Lista de construtores ---------------------
@@ -417,13 +479,12 @@ public class TypeCheck extends VarCheck {
 		}
 	}
 
-	// --------------------- Comando return -------------------------
+	/*--- Programa 11.16: comando return ---*/
 	public void TypeCheckReturnNode(ReturnNode x) throws SemanticException {
+		
 		Type t;
 
-		if (x == null) {
-			return;
-		}
+		if (x == null) return;
 
 		// t = tipo e dimensão do resultado da expressão
 		t = TypeCheckExpreNode(x.expr);
@@ -443,12 +504,15 @@ public class TypeCheck extends VarCheck {
 		}
 
 		// compara tipo e dimensão
+		if (t.ty == INT_TYPE && Returntype.ty == FLOAT_TYPE) {
+			return;
+		}
 		if ((t.ty != Returntype.ty) || (t.dim != Returntype.dim)) {
 			throw new SemanticException(x.position, "Invalid return type");
 		}
 	}
 
-	// -------------------------- Corpo de m�todo ----------------------
+	// -------------------------- Corpo de método ----------------------
 	public void TypeCheckMethodBodyNode(MethodBodyNode x) {
 		if (x == null) {
 			return;
@@ -477,7 +541,7 @@ public class TypeCheck extends VarCheck {
 		}
 	}
 
-	// ------------------------ lista de vari�veis locais ----------------------
+	// ------------------------ lista de variáveis locais ----------------------
 	public void TypeCheckLocalVarDeclListNode(ListNode x) {
 		if (x == null) {
 			return;
@@ -493,7 +557,7 @@ public class TypeCheck extends VarCheck {
 		TypeCheckLocalVarDeclListNode(x.next);
 	}
 
-	// ------------------------- Comando de atribuição -------------------
+	/*--- Programa 11.17: comando de atribuição ---*/
 	public void TypeCheckAtribNode(AtribNode x) throws SemanticException {
 		Type t1;
 		Type t2;
@@ -743,7 +807,7 @@ public class TypeCheck extends VarCheck {
 			return null;
 		}
 
-		// procura vari�vel na tabela
+		// procura variavel na tabela
 		p = Curtable.varFind(x.position.image);
 
 		// se n�o achou, ERRO
@@ -958,8 +1022,7 @@ public class TypeCheck extends VarCheck {
 			return new Type(FLOAT_TYPE, 0);
 	}
 
-	/*--- Programa 11.31 ---*/
-	// ------------------------ Soma ou subtração -------------------
+	/*--- Programa 11.31: soma ou subtração ---*/
 	public Type TypeCheckAddNode(AddNode x) throws SemanticException {
 		Type t1;
 		Type t2;
@@ -1123,10 +1186,10 @@ public class TypeCheck extends VarCheck {
 			} else if (t2.ty == FLOAT_TYPE) {
 				return new Type(BOOLEAN_TYPE, 0);  // se int e float, retorna OK
 			}
-		} else if (t2.ty == FLOAT_TYPE) {
-			if (t1.ty == FLOAT_TYPE) {
+		} else if (t1.ty == FLOAT_TYPE) {
+			if (t2.ty == FLOAT_TYPE) {
 				return new Type(BOOLEAN_TYPE, 0); // se ambos são float, retorna OK
-			} else if (t1.ty == INT_TYPE) {
+			} else if (t2.ty == INT_TYPE) {
 				return new Type(BOOLEAN_TYPE, 0); // se float e int, retorna OK
 			}
 		}	
@@ -1312,7 +1375,7 @@ public class TypeCheck extends VarCheck {
 	}
 
 	public void TypeCheckNopNode(NopNode x) {
-		// Nada a ser veito
+		// Nada a ser feito
 	}
 
 	public Type TypeCheckDotNode(DotNode x) throws SemanticException {

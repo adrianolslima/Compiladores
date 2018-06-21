@@ -8,7 +8,7 @@ public class VarNode extends ExpreNode {
 	
 	public int dim;
 	public Token atrib;
-	ExpreNode exp;
+	public ExpreNode exp;
 
 	public VarNode(Token t) {
 		super(t);
